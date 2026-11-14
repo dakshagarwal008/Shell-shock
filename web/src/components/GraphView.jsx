@@ -192,7 +192,10 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
 
   return <section className="graph-card">
     <div className="graph-heading"><div><span className="eyebrow">TRANSACTION NETWORK</span><h3>{selected ? <>{selected.id} <small>· {Array.isArray(selected.accounts) ? selected.accounts.length : 0} ACCOUNTS</small></> : 'Cluster graph'}</h3></div><div className="graph-controls"><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() * 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom in">+</button><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() / 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom out">−</button><button onClick={() => cyRef.current?.fit(undefined, 45)} aria-label="Fit graph">Fit</button><button onClick={() => { const cy = cyRef.current; if (cy) { cy.reset(); cy.fit(undefined, 45); } }} aria-label="Reset graph view">Reset</button></div></div>
-    <div className="graph-canvas" ref={container}>{graphError ? <div className="graph-empty">{graphError}</div> : !(graph.nodes ?? []).some(node => node?.id != null) && <div className="graph-empty">No transaction graph in this run.</div>}</div>
+    <div className="graph-stage">
+      <div className="graph-canvas" ref={container}/>
+      {(graphError || !(graph.nodes ?? []).some(node => node?.id != null)) && <div className="graph-empty" role={graphError ? 'alert' : 'status'}>{graphError || 'No transaction graph in this run.'}</div>}
+    </div>
     <div className="graph-legend"><span className="account-legend"><i/>ACCOUNT NODE</span><span className="transfer-legend"><i/>DIRECTED TRANSFER</span><span className="legend-separator" aria-hidden="true"/>{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
     <div className="graph-status" aria-live="polite">{notice || 'Click a node or transaction to inspect its details. Drag to pan; scroll to zoom.'}</div>
   </section>;

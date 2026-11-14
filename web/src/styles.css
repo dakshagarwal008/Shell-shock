@@ -147,6 +147,7 @@ a { color: inherit; }
 .graph-controls { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; }
 .graph-controls button { min-width: 27px; height: 25px; padding: 0 6px; font: 8px var(--mono); }
 .graph-controls button:hover { border-color: #628780; color: var(--teal-bright); }
+.graph-stage { position: relative; }
 .graph-canvas { position: relative; height: 355px; background-color: #0a171e; background-image: radial-gradient(#34444a 0.65px, transparent .65px), radial-gradient(ellipse at 50% 48%, rgba(55, 92, 100, .12), transparent 68%); background-size: 22px 22px, 100% 100%; }
 .graph-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; min-height: 34px; padding: 5px 12px; border-top: 1px solid var(--line-soft); color: #9aabad; font: 8px var(--mono); letter-spacing: .025em; }
 .graph-legend span { display: flex; align-items: center; gap: 5px; }
