@@ -78,6 +78,22 @@ def export_pipeline_outputs(
     with open(out_path / "graph.json", "w", encoding="utf-8") as f:
         json.dump({"nodes": nodes_payload, "edges": edges_payload}, f, indent=2)
 
+    # 2b. Additive historical feed for the isolated Live Demo Mode. The three
+    # existing JSON exports and their schemas remain unchanged.
+    transactions_payload = [
+        {
+            "id": str(data["id"]),
+            "source": str(u),
+            "target": str(v),
+            "amount": float(data["amount"]),
+            "timestamp": str(data["timestamp"]),
+        }
+        for u, v, _, data in G.edges(keys=True, data=True)
+    ]
+    transactions_payload.sort(key=lambda transaction: (transaction["timestamp"], transaction["id"]))
+    with open(out_path / "transactions.json", "w", encoding="utf-8") as f:
+        json.dump(transactions_payload, f, indent=2)
+
     # 3. Export metrics.json if provided
     if metrics is not None:
         with open(out_path / "metrics.json", "w", encoding="utf-8") as f:

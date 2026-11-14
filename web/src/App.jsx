@@ -5,6 +5,7 @@ import ClusterTable from './components/ClusterTable.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
 import DashboardSkeleton from './components/DashboardSkeleton.jsx';
 import InvestigationMode from './components/InvestigationMode.jsx';
+import LiveMonitor from './components/LiveMonitor.jsx';
 import { useDashboardData } from './hooks/useDashboardData.js';
 import { riskBand } from './utils/clusterDisplay.js';
 
@@ -41,6 +42,7 @@ function DashboardPage({ investigationId }) {
   const [riskLevel, setRiskLevel] = useState('all');
   const [sort, setSort] = useState('risk');
   const [ascending, setAscending] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
   const appliedFilters = useRef({ clusters: null, query: null, typology: null, riskLevel: null });
   const previousInvestigationId = useRef(null);
   const reload = useCallback(() => { setGraphItem(null); refresh(); }, [refresh]);
@@ -117,13 +119,16 @@ function DashboardPage({ investigationId }) {
     return <InvestigationMode key={investigationCluster.id} cluster={investigationCluster} data={data} graphItem={graphItem} onGraphSelect={handleGraphSelect} onBack={() => { window.location.hash = '#/dashboard'; }} period={periodByCluster[investigationCluster.id]} transactions={selectedTransactions}/>;
   }
 
-  return <main className="app-shell">
-    <header className="topbar"><a className="brand" href="#/" aria-label="Return to Shell Shocker home"><span className="brand-mark">SS</span><span>Shell Shocker<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="dashboard-nav"><span className="dashboard-current">INVESTIGATION WORKSPACE</span><span className="topbar-date">DEMO ENVIRONMENT</span><button className="refresh-button" onClick={reload} disabled={loading} aria-label="Refresh dashboard data">{loading ? 'Refreshing…' : 'Refresh data'}</button></div></header>
+  return <>
+  <main className={`app-shell ${demoMode ? 'dashboard-mode-suspended' : ''}`}>
+    <header className="topbar"><a className="brand" href="#/" aria-label="Return to Shell Shocker home"><span className="brand-mark">SS</span><span>Shell Shocker<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="dashboard-nav"><span className="dashboard-current">INVESTIGATION WORKSPACE</span><span className="topbar-date">DEMO ENVIRONMENT</span><button className="refresh-button" onClick={() => setDemoMode(true)} aria-pressed={demoMode}>Live Demo Mode</button><button className="refresh-button" onClick={reload} disabled={loading} aria-label="Refresh dashboard data">{loading ? 'Refreshing…' : 'Refresh data'}</button></div></header>
     <section className="intro" id="top"><div><span className="eyebrow">PS 2.1 · NETWORK ANALYSIS</span><h1>Follow the money.<br/><em>Find the pattern.</em></h1><p>Layered transaction networks, surfaced and explained.</p></div><div className="dataset-chip"><span className="dataset-icon">◈</span><div><b>{data.metrics.dataset?.transactions?.toLocaleString() ?? '—'}</b><small>TRANSACTIONS ANALYZED</small></div><i/></div></section>
     {error && <div className="refresh-error" role="alert">Refresh failed: {error} <button onClick={reload}>Retry</button></div>}
     <MetricsBanner metrics={data.metrics} totals={{ clusters: data.clusters.length, nodes: data.graph.nodes.length, edges: data.graph.edges.length }}/>
     <div className="section-heading"><div><span className="eyebrow">PRIORITIZED FOR REVIEW</span><h2>Suspicious alerts <span>{visibleClusters.length.toString().padStart(2, '0')}</span></h2></div><div className="section-note"><span className="live-dot"/> DETECTION OUTPUT · RANKED BY RISK</div></div>
     <section className="workspace"><ClusterTable clusters={visibleClusters} totalClusters={data.clusters.length} typologies={typologies} query={query} typology={typology} riskLevel={riskLevel} onRiskLevelChange={setRiskLevel} periodByCluster={periodByCluster} sort={sort} ascending={ascending} onQueryChange={setQuery} onTypologyChange={setTypology} onSortChange={sortBy} selectedId={selectedId} onSelect={selectCluster}/><div className="right-column"><Suspense fallback={<div className="graph-loading">Loading network visualization…</div>}><GraphView graph={data.graph} clusters={data.clusters} selected={selected} graphItem={graphItem} onSelect={handleGraphSelect}/></Suspense><DetailPanel cluster={selected} graphItem={graphItem} period={selected ? periodByCluster[selected.id] : null} transactions={selectedTransactions} onInvestigate={() => selected && openInvestigation(selected.id)}/></div></section>
     <footer><span>Shell Shocker <i>·</i> GRAPH-BASED AML DETECTION</span><span>DEMO DATASET <i>·</i> BUILD BEYOND ’26</span></footer>
-  </main>;
+  </main>
+  {demoMode && <LiveMonitor onExit={() => setDemoMode(false)}/>}
+  </>;
 }
