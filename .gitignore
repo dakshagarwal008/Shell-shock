@@ -5,3 +5,7 @@ web/.vite/
 .vite/
 .DS_Store
 *.log
+
+# Python generated files
+__pycache__/
+*.py[cod]
