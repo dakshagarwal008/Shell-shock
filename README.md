@@ -231,26 +231,7 @@ Dashboard → Transaction Graph → Investigate an Alert → Live Demo → Excep
 6. **Try Exception Demo:** Choose **Exception Demo**, observe its four graph regions, then start the shared replay. Compare the legitimate and suspicious fan-in examples and the legitimate and suspicious fan-out examples. Watch outcomes emerge, read the comparison panel, and open supporting investigation evidence where available. **A transaction pattern is a signal, not proof of financial crime.** All scenarios are synthetic.
 7. **Review evaluation:** Return to the dashboard's metrics banner to compare precision, recall, and F1 for the threshold baseline and graph method. Values are account-level results on the supplied synthetic planted dataset; see [Evaluation and performance](#evaluation-and-performance) for interpretation and limits.
 
-## 60-Second Demo Walkthrough
 
-| Time | What to show | What to explain |
-| --- | --- | --- |
-| 0–8 sec | Landing page / Dashboard | Introduce TRACE and the gap in transaction-by-transaction monitoring. |
-| 8–20 sec | Live Demo | Replay transactions entering the graph and show prefix-based alerts developing. |
-| 20–38 sec | Exception Demo | Show the four networks and explain why fan-in/fan-out alone is not proof. |
-| 38–50 sec | Investigation Mode | Open a suspicious alert and show its evidence, explanation, and money trail. |
-| 50–60 sec | Dashboard / final view | Summarize graph-based detection and the importance of context. |
-
-**Spoken narration (about 105 words):**
-
-> TRACE helps investigators see suspicious activity that can be missed when transfers are reviewed one at a time. It connects accounts and transactions into a time-based network, then highlights patterns such as money flowing in, spreading out, looping back, or moving quickly through intermediaries. In Live Demo, you can watch historical demo transactions arrive and alerts develop. The Exception Demo compares four synthetic networks: legitimate and suspicious examples of fan-in and fan-out. That shows why a pattern alone is only a signal. Open an investigation to inspect the accounts, transfers, and explanation behind an alert. TRACE doesn't just detect transaction patterns. It understands how money moves through networks.
-
-## Limitations and future scope
-
-- The included transaction data and Exception Demo scenarios are synthetic; Live Demo replays historical demo records and is not connected to live banking systems.
-- Evaluation is performed on planted ground truth in the supplied dataset. Broader validation on larger, independent real-world datasets is needed.
-- Additional contextual information could help investigators assess false positives. Secure ingestion, privacy controls, and operational integration would be required before any production use with real financial data.
-- The application supports explainable review and report printing; it does not determine that a person or organization committed financial crime.
 
 ## Final takeaway
 
