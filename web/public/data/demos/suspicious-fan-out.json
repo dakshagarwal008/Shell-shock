@@ -1,0 +1,114 @@
+[
+  {
+    "id": "DIST-IN-001",
+    "source": "ORIGIN-1",
+    "target": "DIST-HUB-01",
+    "amount": 61500,
+    "timestamp": "2026-03-07T10:00:00"
+  },
+  {
+    "id": "DIST-IN-002",
+    "source": "ORIGIN-2",
+    "target": "DIST-HUB-01",
+    "amount": 58400,
+    "timestamp": "2026-03-07T10:03:00"
+  },
+  {
+    "id": "DIST-IN-003",
+    "source": "ORIGIN-3",
+    "target": "DIST-HUB-01",
+    "amount": 64200,
+    "timestamp": "2026-03-07T10:06:00"
+  },
+  {
+    "id": "DIST-IN-004",
+    "source": "ORIGIN-4",
+    "target": "DIST-HUB-01",
+    "amount": 59700,
+    "timestamp": "2026-03-07T10:09:00"
+  },
+  {
+    "id": "DIST-IN-005",
+    "source": "ORIGIN-5",
+    "target": "DIST-HUB-01",
+    "amount": 66800,
+    "timestamp": "2026-03-07T10:12:00"
+  },
+  {
+    "id": "DIST-IN-006",
+    "source": "ORIGIN-6",
+    "target": "DIST-HUB-01",
+    "amount": 62300,
+    "timestamp": "2026-03-07T10:15:00"
+  },
+  {
+    "id": "DIST-OUT-001",
+    "source": "DIST-HUB-01",
+    "target": "MULE-A",
+    "amount": 59000,
+    "timestamp": "2026-03-07T10:22:00"
+  },
+  {
+    "id": "DIST-OUT-002",
+    "source": "DIST-HUB-01",
+    "target": "MULE-B",
+    "amount": 56500,
+    "timestamp": "2026-03-07T10:25:00"
+  },
+  {
+    "id": "DIST-OUT-003",
+    "source": "DIST-HUB-01",
+    "target": "MULE-C",
+    "amount": 62100,
+    "timestamp": "2026-03-07T10:28:00"
+  },
+  {
+    "id": "DIST-OUT-004",
+    "source": "DIST-HUB-01",
+    "target": "MULE-D",
+    "amount": 57800,
+    "timestamp": "2026-03-07T10:31:00"
+  },
+  {
+    "id": "DIST-OUT-005",
+    "source": "DIST-HUB-01",
+    "target": "MULE-E",
+    "amount": 64100,
+    "timestamp": "2026-03-07T10:34:00"
+  },
+  {
+    "id": "DIST-OUT-006",
+    "source": "DIST-HUB-01",
+    "target": "MULE-F",
+    "amount": 60000,
+    "timestamp": "2026-03-07T10:37:00"
+  },
+  {
+    "id": "DIST-FWD-001",
+    "source": "MULE-A",
+    "target": "LAYER-1",
+    "amount": 55460,
+    "timestamp": "2026-03-07T11:00:00"
+  },
+  {
+    "id": "DIST-FWD-002",
+    "source": "MULE-B",
+    "target": "LAYER-2",
+    "amount": 53110,
+    "timestamp": "2026-03-07T11:05:00"
+  },
+  {
+    "id": "DIST-FWD-003",
+    "source": "MULE-C",
+    "target": "LAYER-3",
+    "amount": 58374,
+    "timestamp": "2026-03-07T11:10:00"
+  },
+  {
+    "id": "DIST-FWD-004",
+    "source": "MULE-D",
+    "target": "LAYER-4",
+    "amount": 54332,
+    "timestamp": "2026-03-07T11:15:00"
+  }
+]

@@ -1,7 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import InvestigationMode from './InvestigationMode.jsx';
 import { TypologyBadge } from './ClusterTable.jsx';
+import DemoSelector from './DemoSelector.jsx';
 import { formatTimestamp, money, riskBand, TYPOLOGY } from '../utils/clusterDisplay.js';
+import { selectVisibleGraphTransactions } from '../utils/graphRetention.js';
 
 const GraphView = lazy(() => import('./GraphView.jsx'));
 const CHECKPOINT_SIZE = 50;
@@ -25,7 +27,7 @@ function reconcileAlerts(found, previous, nextIdRef) {
 
 function Typologies({ values = [] }) { return <div className="alert-typologies">{values.map(value => <TypologyBadge key={value} value={value}/>)}</div>; }
 
-export default function LiveMonitor({ onExit }) {
+export default function LiveMonitor({ active = true, selectedDemo = 'live', onSelectDemo = () => {} }) {
   const [transactions, setTransactions] = useState(null);
   const [loadError, setLoadError] = useState('');
   const [status, setStatus] = useState('idle');
@@ -78,7 +80,7 @@ export default function LiveMonitor({ onExit }) {
   }, []);
 
   useEffect(() => {
-    if (status !== 'running' || !transactions?.length) return undefined;
+    if (!active || status !== 'running' || !transactions?.length) return undefined;
     const cadence = 100;
     const timer = window.setInterval(() => {
       if (busyRef.current) return;
@@ -93,7 +95,9 @@ export default function LiveMonitor({ onExit }) {
       if (nextPosition === transactionsRef.current.length) setStatus('complete');
     }, cadence);
     return () => window.clearInterval(timer);
-  }, [status, speed, transactions, analyze]);
+  }, [active, status, speed, transactions, analyze]);
+
+  useEffect(() => { if (!active && status === 'running') setStatus('paused'); }, [active, status]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -114,14 +118,16 @@ export default function LiveMonitor({ onExit }) {
   const graph = useMemo(() => {
     const clusterByTransaction = new Map();
     clusters.forEach(cluster => cluster.transaction_ids.forEach(id => { if (!clusterByTransaction.has(id)) clusterByTransaction.set(id, cluster.id); }));
-    const accountIds = new Set(processed.flatMap(transaction => [transaction.source, transaction.target]));
+    const { transactions: visibleTransactions, suspiciousIds } = selectVisibleGraphTransactions(processed, clusters);
+    const accountIds = new Set(visibleTransactions.flatMap(transaction => [transaction.source, transaction.target]));
+    clusters.forEach(cluster => cluster.accounts.forEach(account => accountIds.add(account)));
     const riskByAccount = new Map();
     clusters.forEach(cluster => cluster.accounts.forEach(account => riskByAccount.set(account, Math.max(riskByAccount.get(account) ?? 0, Number(cluster.risk_score ?? 0) / 100))));
     return {
       nodes: [...accountIds].map(id => ({ id, label: id, cluster_ids: clusterIdsByAccount.get(id) ?? [], risk: riskByAccount.get(id) ?? null })),
-      edges: processed.map(transaction => ({ ...transaction, cluster_id: clusterByTransaction.get(transaction.id) ?? '' }))
+      edges: visibleTransactions.map(transaction => ({ ...transaction, cluster_id: clusterByTransaction.get(transaction.id) ?? '', display_status: suspiciousIds.has(String(transaction.id)) ? (transaction.id === latest?.id ? 'suspicious' : 'retained-suspicious') : 'normal' }))
     };
-  }, [processed, clusters, clusterIdsByAccount]);
+  }, [processed, clusters, clusterIdsByAccount, position, latest?.id]);
   const selected = clusters.find(cluster => cluster.id === (investigatingId ?? graphItem?.clusterId)) ?? clusters[0] ?? null;
   const transactionsByCluster = useMemo(() => selected ? processed.filter(transaction => selected.transaction_ids.includes(transaction.id)) : [], [processed, selected]);
   const period = useMemo(() => {
@@ -145,11 +151,11 @@ export default function LiveMonitor({ onExit }) {
 
   if (investigatingId && selected) {
     const investigationData = { clusters, graph };
-    return <InvestigationMode key={`live-${selected.id}`} cluster={selected} data={investigationData} graphItem={graphItem} onGraphSelect={onGraphSelect} onBack={() => setInvestigatingId(null)} period={period} transactions={transactionsByCluster}/>;
+    return <InvestigationMode key={`live-${selected.id}`} cluster={selected} data={investigationData} graphItem={graphItem} onGraphSelect={onGraphSelect} onBack={() => setInvestigatingId(null)} period={period} transactions={transactionsByCluster} headerExtra={<DemoSelector value={selectedDemo} onChange={onSelectDemo}/>}/>;
   }
 
   return <main className="app-shell live-monitor-shell">
-    <header className="topbar"><a className="brand" href="#/" aria-label="Return to Shell Shocker home"><span className="brand-mark">SS</span><span>Shell Shocker<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="dashboard-nav"><span className="dashboard-current">LIVE MONITOR</span><span className="topbar-date">HISTORICAL SIMULATION</span><button className="refresh-button" onClick={onExit}>Return to dashboard</button></div></header>
+    <header className="topbar"><a className="brand" href="#/" aria-label="Return to Shell Shocker home"><span className="brand-mark">SS</span><span>Shell Shocker<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="dashboard-nav"><span className="dashboard-current">LIVE MONITOR</span><span className="topbar-date">HISTORICAL SIMULATION</span><DemoSelector value={selectedDemo} onChange={onSelectDemo}/></div></header>
     <section className="live-title"><div><span className="eyebrow">REPLAY ENVIRONMENT · HISTORICAL DATA ONLY</span><h1>Live Monitor</h1><p>Replay real recorded transactions through the existing detection rules. This is a simulation, not live banking data.</p></div><span className={`live-state ${status}`}><i/>{status === 'running' ? 'LIVE SIMULATION' : status === 'complete' ? 'REPLAY COMPLETE' : status === 'paused' ? 'PAUSED' : 'READY'}</span></section>
     {loadError && <div className="live-error" role="alert">{loadError}</div>}
     {transactions && <section className="live-stats" aria-label="Live simulation status">
@@ -165,7 +171,7 @@ export default function LiveMonitor({ onExit }) {
     </section>
     {!transactions && !loadError && <div className="live-loading">Loading historical transactions…</div>}
     {transactions && <div className="live-layout">
-      <section className="live-graph-column"><div className="live-section-title"><div><span className="eyebrow">INCREMENTAL TRANSACTION NETWORK</span><h2>Activity as it arrives</h2></div><span>{graph.nodes.length} ACCOUNTS · {graph.edges.length} TRANSFERS</span></div><Suspense fallback={<div className="graph-loading">Loading transaction network…</div>}><GraphView graph={graph} clusters={clusters} selected={selected} graphItem={graphItem} onSelect={onGraphSelect} incremental latestTransactionId={latest?.id}/></Suspense>
+      <section className="live-graph-column"><div className="live-section-title"><div><span className="eyebrow">INCREMENTAL TRANSACTION NETWORK</span><h2>Activity as it arrives</h2></div><span>{graph.nodes.length} ACCOUNTS · {graph.edges.length} VISIBLE / {processed.length} PROCESSED</span></div><p className="graph-retention-note">Normal edges stay visible for at least 40 later replay records; above 160 ordinary edges, the oldest eligible edge expires first. Suspicious paths remain pinned. Replay history and detection always retain every processed transaction.</p><Suspense fallback={<div className="graph-loading">Loading transaction network…</div>}><GraphView graph={graph} clusters={clusters} selected={selected} graphItem={graphItem} onSelect={onGraphSelect} incremental latestTransactionId={latest?.id}/></Suspense>
       <div className="live-feed"><div className="live-section-title"><div><span className="eyebrow">LATEST RECORDS</span><h2>Recent transaction feed</h2></div><span>{processed.length ? `LATEST ${Math.min(8, processed.length)} OF ${processed.length}` : 'AWAITING ACTIVITY'}</span></div>{processed.length ? <div className="live-feed-list"><div className="live-feed-head"><span>TRANSACTION</span><span>SENDER → RECEIVER</span><span>AMOUNT</span><span>TIMESTAMP</span></div>{processed.slice(-8).reverse().map(transaction=><div className={`live-feed-row ${transaction.id===latest?.id?'newest':''}`} key={transaction.id}><span>{transaction.id}</span><b>{transaction.source} <i>→</i> {transaction.target}</b><strong>{money(transaction.amount)}</strong><time>{formatTimestamp(transaction.timestamp)}</time></div>)}</div> : <p className="live-empty">Transactions will appear here as the replay advances.</p>}</div></section>
       <aside className="live-alert-column"><div className="live-section-title"><div><span className="eyebrow">PREFIX-BASED DETECTION</span><h2>Developing alerts <span>{clusters.length}</span></h2></div></div><p className="live-alert-note">Recomputed from arrived transactions only using the existing fan-in, fan-out, cycle, pass-through and scoring rules.</p>{notice && <p className="live-notice" aria-live="polite">{notice}</p>}{clusters.length ? <div className="live-alert-list">{clusters.map(cluster=>{const band=riskBand(cluster.risk_score);return <article className="live-alert" key={cluster.id}><div className="live-alert-top"><span>{cluster.id}</span><span className={`severity-badge ${band?.id??'unavailable'}`}>{band?.label??'Unavailable'}</span></div><div className="live-alert-score"><b>{cluster.risk_score}</b><small>/ 100 · RISK SCORE</small><strong>{money(cluster.total_amount)}</strong></div><Typologies values={cluster.typologies}/><p>{cluster.summary || 'Detection evidence is available from the current transaction prefix.'}</p><div className="live-alert-meta"><span>{cluster.accounts.length} accounts</span><span>{cluster.transaction_ids.length} transfers</span></div><button onClick={()=>alertClick(cluster)}>Investigate this alert <span>↗</span></button></article>;})}</div> : <div className="live-alert-empty"><span>NO ALERTS AT THIS PREFIX</span><p>As transactions are replayed, patterns will appear here when the current backend detection thresholds are met.</p></div>}</aside>
     </div>}

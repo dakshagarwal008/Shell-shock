@@ -13,7 +13,7 @@ function periodLabel(period) {
   return start === end ? start : `${start} — ${end}`;
 }
 
-export default function InvestigationMode({ cluster, data, graphItem, onGraphSelect, onBack, period, transactions }) {
+export default function InvestigationMode({ cluster, data, graphItem, onGraphSelect, onBack, period, transactions, headerExtra = null }) {
   const [replayTransactionId, setReplayTransactionId] = useState(null);
   const [evidenceAccountIds, setEvidenceAccountIds] = useState([]);
   const band = riskBand(cluster.risk_score);
@@ -36,7 +36,7 @@ export default function InvestigationMode({ cluster, data, graphItem, onGraphSel
   return <main className="app-shell investigation-mode-shell">
     <header className="topbar investigation-topbar">
       <a className="brand" href="#/" aria-label="Return to Shell Shocker home"><span className="brand-mark">SS</span><span>Shell Shocker<small>FINANCIAL CRIME INTELLIGENCE</small></span></a>
-      <div className="investigation-actions"><span className="investigation-route-label">INVESTIGATION MODE</span><button className="refresh-button" onClick={onBack}>Back to alerts</button><button className="report-button" onClick={() => window.print()}>Export Investigation Report <span>PDF / Print</span></button></div>
+      <div className="investigation-actions">{headerExtra}<span className="investigation-route-label">INVESTIGATION MODE</span><button className="refresh-button" onClick={onBack}>Back to alerts</button><button className="report-button" onClick={() => window.print()}>Export Investigation Report <span>PDF / Print</span></button></div>
     </header>
 
     <section className="investigation-page-heading"><div><span className="eyebrow">CLUSTER ALERT · {cluster.id} · DETECTION RANK {String(cluster.rank ?? '—').padStart(2, '0')}</span><h1>Investigation Mode</h1><p>Review the alert, replay its timestamped transfers, and inspect the backend evidence.</p><p className="risk-score-explainer">Risk score prioritizes suspicious patterns for review; it is not proof of criminal activity.</p></div><span className="investigation-page-score" style={band ? { '--severity-color': band.color } : undefined}><small>RISK SCORE</small><b>{cluster.risk_score ?? 'Unavailable'}<i>{cluster.risk_score != null ? '/100' : ''}</i></b><span className={`severity-badge ${band?.id ?? 'unavailable'}`}>{band?.label ?? 'Unavailable'}</span></span></section>

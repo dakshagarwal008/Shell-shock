@@ -1,0 +1,142 @@
+[
+  {
+    "id": "LAUNDER-TX-001",
+    "source": "PERSON-101",
+    "target": "SHOP-201",
+    "amount": 1800,
+    "timestamp": "2026-03-03T08:42:00"
+  },
+  {
+    "id": "LAUNDER-TX-002",
+    "source": "PERSON-102",
+    "target": "SHOP-202",
+    "amount": 2450,
+    "timestamp": "2026-03-03T08:47:00"
+  },
+  {
+    "id": "LAUNDER-TX-003",
+    "source": "PERSON-103",
+    "target": "SHOP-201",
+    "amount": 3200,
+    "timestamp": "2026-03-03T08:51:00"
+  },
+  {
+    "id": "LAUNDER-TX-004",
+    "source": "PERSON-104",
+    "target": "SHOP-203",
+    "amount": 950,
+    "timestamp": "2026-03-03T08:55:00"
+  },
+  {
+    "id": "LAUNDER-TX-005",
+    "source": "PERSON-105",
+    "target": "SHOP-202",
+    "amount": 4100,
+    "timestamp": "2026-03-03T08:58:00"
+  },
+  {
+    "id": "LAUNDER-TX-006",
+    "source": "SOURCE-01",
+    "target": "COLLECT-01",
+    "amount": 61000,
+    "timestamp": "2026-03-03T09:00:00"
+  },
+  {
+    "id": "LAUNDER-TX-007",
+    "source": "SOURCE-02",
+    "target": "COLLECT-01",
+    "amount": 58500,
+    "timestamp": "2026-03-03T09:05:00"
+  },
+  {
+    "id": "LAUNDER-TX-008",
+    "source": "SOURCE-03",
+    "target": "COLLECT-01",
+    "amount": 63500,
+    "timestamp": "2026-03-03T09:10:00"
+  },
+  {
+    "id": "LAUNDER-TX-009",
+    "source": "SOURCE-04",
+    "target": "COLLECT-01",
+    "amount": 60000,
+    "timestamp": "2026-03-03T09:15:00"
+  },
+  {
+    "id": "LAUNDER-TX-010",
+    "source": "SOURCE-05",
+    "target": "COLLECT-01",
+    "amount": 62500,
+    "timestamp": "2026-03-03T09:20:00"
+  },
+  {
+    "id": "LAUNDER-TX-011",
+    "source": "SOURCE-06",
+    "target": "COLLECT-01",
+    "amount": 59000,
+    "timestamp": "2026-03-03T09:25:00"
+  },
+  {
+    "id": "LAUNDER-TX-012",
+    "source": "COLLECT-01",
+    "target": "MULE-01",
+    "amount": 340000,
+    "timestamp": "2026-03-03T10:05:00"
+  },
+  {
+    "id": "LAUNDER-TX-013",
+    "source": "COLLECT-01",
+    "target": "MULE-02",
+    "amount": 46000,
+    "timestamp": "2026-03-03T10:08:00"
+  },
+  {
+    "id": "LAUNDER-TX-014",
+    "source": "COLLECT-01",
+    "target": "MULE-03",
+    "amount": 44000,
+    "timestamp": "2026-03-03T10:11:00"
+  },
+  {
+    "id": "LAUNDER-TX-015",
+    "source": "COLLECT-01",
+    "target": "MULE-04",
+    "amount": 47000,
+    "timestamp": "2026-03-03T10:14:00"
+  },
+  {
+    "id": "LAUNDER-TX-016",
+    "source": "COLLECT-01",
+    "target": "MULE-05",
+    "amount": 43000,
+    "timestamp": "2026-03-03T10:17:00"
+  },
+  {
+    "id": "LAUNDER-TX-017",
+    "source": "COLLECT-01",
+    "target": "MULE-06",
+    "amount": 45000,
+    "timestamp": "2026-03-03T10:20:00"
+  },
+  {
+    "id": "LAUNDER-TX-018",
+    "source": "MULE-01",
+    "target": "MULE-02",
+    "amount": 327000,
+    "timestamp": "2026-03-03T10:32:00"
+  },
+  {
+    "id": "LAUNDER-TX-019",
+    "source": "MULE-02",
+    "target": "MULE-03",
+    "amount": 320000,
+    "timestamp": "2026-03-03T10:47:00"
+  },
+  {
+    "id": "LAUNDER-TX-020",
+    "source": "MULE-03",
+    "target": "MULE-01",
+    "amount": 315000,
+    "timestamp": "2026-03-03T11:02:00"
+  }
+]

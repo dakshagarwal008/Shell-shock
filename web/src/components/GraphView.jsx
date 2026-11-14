@@ -8,7 +8,23 @@ function focusGraph(cy, elements, padding = 70) {
   else cy.animate({ fit: { eles: elements, padding }, duration: 350 });
 }
 
-export default function GraphView({ graph, clusters, selected, graphItem, onSelect, replayTransactionId = null, evidenceAccountIds = [], incremental = false, latestTransactionId = null }) {
+function graphClasses(status, type = 'edge') {
+  if (type === 'node') return status === 'suspicious' ? 'suspicious-account' : status === 'pattern' ? 'pattern-account' : '';
+  if (status === 'normal') return 'normal-transaction';
+  if (status === 'pattern') return 'pattern-transaction';
+  if (status === 'temporary') return 'normal-transaction temporary-transaction';
+  if (status === 'suspicious') return 'suspicious-transaction';
+  if (status === 'retained-suspicious') return 'suspicious-transaction retained-suspicious-path';
+  return '';
+}
+
+function positionInRegion(region, index, width, height) {
+  const col = region % 2, row = Math.floor(region / 2), angle = index * 2.399963;
+  const radius = Math.min(20 + 11 * Math.sqrt(index), Math.max(22, Math.min(width * .18, height * .18)));
+  return { x: width * (col ? .75 : .25) + Math.cos(angle) * radius, y: height * (row ? .75 : .25) + Math.sin(angle) * radius };
+}
+
+export default function GraphView({ graph, clusters, selected, graphItem, onSelect, replayTransactionId = null, evidenceAccountIds = [], incremental = false, latestTransactionId = null, regions = null }) {
   const container = useRef(null);
   const cyRef = useRef(null);
   const selectedRef = useRef(selected);
@@ -26,7 +42,9 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
     const nodes = (graph.nodes ?? []).filter(n => n?.id != null && !seenNodeIds.has(String(n.id)) && seenNodeIds.add(String(n.id))).map(n => {
       const linkedClusters = (Array.isArray(n.cluster_ids) ? n.cluster_ids : []).map(id => clusterById.get(String(id))).filter(Boolean);
       const linked = linkedClusters[0] ?? clusters.find(c => (Array.isArray(c.accounts) ? c.accounts : []).includes(String(n.id)));
-      return { data: { id: String(n.id), label: String(n.label ?? n.id), risk: n.risk != null && Number.isFinite(Number(n.risk)) ? Number(n.risk) : null, clusters: linkedClusters.length ? linkedClusters.map(c => c.id) : (linked ? [linked.id] : []), color: TYPOLOGY[linked?.typologies?.[0]]?.color ?? '#456171' } };
+      const regional = n.region != null && Number.isInteger(Number(n.region)) && Number(n.region) >= 0 && Number(n.region) < 4;
+      const width = container.current?.clientWidth || 500, height = container.current?.clientHeight || 400;
+      return { data: { id: String(n.id), label: String(n.label ?? n.id), risk: n.risk != null && Number.isFinite(Number(n.risk)) ? Number(n.risk) : null, clusters: linkedClusters.length ? linkedClusters.map(c => c.id) : (linked ? [linked.id] : []), color: TYPOLOGY[linked?.typologies?.[0]]?.color ?? '#456171', region: n.region ?? null, regionIndex: n.regionIndex ?? 0 }, ...(regional ? { position: positionInRegion(Number(n.region), Number(n.regionIndex ?? 0), width, height) } : {}), classes: `${graphClasses(n.display_status, 'node')} ${regional ? 'scenario-node' : ''}`.trim() };
     });
     const nodeIds = new Set(nodes.map(n => n.data.id));
     const seenEdgeIds = new Set();
@@ -35,10 +53,10 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const color = TYPOLOGY[cluster?.typologies?.[0]]?.color ?? '#7490a4';
       const amount = e.amount != null && Number.isFinite(Number(e.amount)) ? Number(e.amount) : null;
       const timestamp = typeof e.timestamp === 'string' ? e.timestamp : null;
-      return { data: { id: String(e.id), source: String(e.source), target: String(e.target), amount, timestamp, title: `${money(amount)} · ${timestamp ?? 'time unavailable'}`, color, clusterId: String(e.cluster_id ?? ''), width: Math.max(1.5, Math.min(7, 1.5 + Math.log10(Math.max(1, amount || 1) / 10000))) } };
+      return { data: { id: String(e.id), source: String(e.source), target: String(e.target), amount, timestamp, title: `${money(amount)} · ${timestamp ?? 'time unavailable'}`, color, clusterId: String(e.cluster_id ?? ''), width: Math.max(1.5, Math.min(7, 1.5 + Math.log10(Math.max(1, amount || 1) / 10000))) }, classes: graphClasses(e.display_status) };
     });
     let cy;
-    try { cy = cytoscape({ container: container.current, elements: [...nodes, ...edges], minZoom: 0.35, maxZoom: 2.8, wheelSensitivity: 0.18, layout: { name: 'cose', animate: false, fit: true, padding: 38, nodeRepulsion: 6500, idealEdgeLength: 115, gravity: 0.18, numIter: nodes.length > 300 ? 250 : 700 }, style: [
+    try { cy = cytoscape({ container: container.current, elements: [...nodes, ...edges], minZoom: 0.35, maxZoom: 2.8, wheelSensitivity: 0.18, layout: regions?.length === 4 ? { name: 'preset', fit: false } : { name: 'cose', animate: false, fit: true, padding: 38, nodeRepulsion: 6500, idealEdgeLength: 115, gravity: 0.18, numIter: nodes.length > 300 ? 250 : 700 }, style: [
       { selector: 'node', style: { label: 'data(label)', width: 36, height: 36, 'background-color': 'data(color)', 'background-opacity': 0.2, 'border-width': 2, 'border-color': 'data(color)', color: '#e3edf1', 'font-size': 11, 'min-zoomed-font-size': 9, 'font-family': 'IBM Plex Mono, monospace', 'text-valign': 'center', 'text-halign': 'center', 'text-outline-color': '#101920', 'text-outline-width': 2 } },
       { selector: 'edge', style: { 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'line-color': 'data(color)', 'target-arrow-color': 'data(color)', width: 'data(width)', opacity: 0.8, label: '', 'font-size': 9, 'min-zoomed-font-size': 8, 'font-family': 'IBM Plex Mono, monospace', color: '#b4c3cb', 'text-background-color': '#101920', 'text-background-opacity': 0.9, 'text-background-padding': 2, 'text-rotation': 'autorotate' } },
       { selector: '.dimmed', style: { opacity: 0.12 } },
@@ -46,6 +64,14 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       { selector: 'node.node-focus', style: { 'border-color': '#ffffff', 'border-width': 4, width: 47, height: 47 } },
       { selector: 'edge.connected-focus', style: { opacity: 1, width: 5 } },
       { selector: 'edge.active', style: { opacity: 1, width: 'mapData(width, 1, 7, 2.5, 8)', label: 'data(title)' } },
+      { selector: 'edge.normal-transaction', style: { 'line-color': '#788a90', 'target-arrow-color': '#788a90' } },
+      { selector: 'edge.pattern-transaction', style: { 'line-color': '#c6a66b', 'target-arrow-color': '#c6a66b', opacity: 0.76, width: 2.5 } },
+      { selector: 'edge.temporary-transaction', style: { opacity: 0.42, 'line-style': 'dotted', width: 2 } },
+      { selector: 'edge.suspicious-transaction', style: { 'line-color': '#d19a64', 'target-arrow-color': '#d19a64', opacity: 0.94, width: 4 } },
+      { selector: 'edge.retained-suspicious-path', style: { 'line-color': '#df837a', 'target-arrow-color': '#df837a', opacity: 1, width: 5 } },
+      { selector: 'node.pattern-account', style: { 'border-color': '#c6a66b', 'border-width': 3 } },
+      { selector: 'node.suspicious-account', style: { 'border-color': '#df837a', 'border-width': 4, 'background-opacity': 0.55 } },
+      { selector: 'node.scenario-node', style: { width: 29, height: 29, 'font-size': 8, 'min-zoomed-font-size': 7 } },
       { selector: 'node.replay-account', style: { 'background-opacity': 0.82, 'border-width': 4, width: 49, height: 49, 'shadow-blur': 12, 'shadow-color': 'data(color)', 'shadow-opacity': 0.48 } },
       { selector: 'edge.replay-current', style: { opacity: 1, width: 8, 'shadow-blur': 10, 'shadow-color': 'data(color)', 'shadow-opacity': 0.55 } },
       { selector: 'node.evidence-account', style: { 'border-color': '#e9f0ed', 'border-width': 3, 'border-style': 'dashed', width: 46, height: 46 } },
@@ -61,7 +87,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const edgesInCluster = cy.edges().filter(e => transactionIds.includes(e.id()) || e.data('clusterId') === cluster.id);
       const active = nodesInCluster.union(edgesInCluster);
       cy.elements().difference(active).addClass('dimmed'); active.addClass('active');
-      focusGraph(cy, active);
+      if (!regions?.length) focusGraph(cy, active);
     };
     cy.on('tap', 'node, edge', event => {
       const element = event.target;
@@ -80,7 +106,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
     cy.on('mouseout', 'node, edge', () => setNotice('Accounts are nodes; arrows show transfer direction. Brighter edges belong to the selected cluster; edge width represents amount. Drag to pan and scroll to zoom.'));
     applySelection(selectedRef.current);
     return () => { cy.destroy(); cyRef.current = null; };
-  }, [incremental ? null : graph, incremental ? null : clusters, onSelect, incremental]);
+  }, [incremental ? null : graph, incremental ? null : clusters, onSelect, incremental, regions]);
 
   useEffect(() => {
     if (!incremental) return;
@@ -102,15 +128,21 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const related = linked[0] ?? clusterForAccount(id);
       const color = TYPOLOGY[related?.typologies?.[0]]?.color ?? '#456171';
       const existing = cy.getElementById(id);
-      const data = { id, label: String(node.label ?? id), risk: node.risk != null && Number.isFinite(Number(node.risk)) ? Number(node.risk) : null, clusters: linked.length ? linked.map(cluster => cluster.id) : related ? [related.id] : [], color };
-      if (existing.length) existing.data(data);
+      const data = { id, label: String(node.label ?? id), risk: node.risk != null && Number.isFinite(Number(node.risk)) ? Number(node.risk) : null, clusters: linked.length ? linked.map(cluster => cluster.id) : related ? [related.id] : [], color, region: node.region ?? null, regionIndex: node.regionIndex ?? 0 };
+      if (existing.length) existing.data(data).removeClass('suspicious-account pattern-account scenario-node').addClass(`${graphClasses(node.display_status, 'node')} ${node.region != null ? 'scenario-node' : ''}`.trim());
       else {
-        const linkedEdge = (graph.edges ?? []).find(edge => String(edge.source) === id || String(edge.target) === id);
-        const neighborId = linkedEdge ? (String(linkedEdge.source) === id ? String(linkedEdge.target) : String(linkedEdge.source)) : null;
-        const neighbor = neighborId ? cy.getElementById(neighborId) : null;
-        const angle = cy.nodes().length * 2.399963;
-        const position = neighbor?.length ? { x: neighbor.position('x') + Math.cos(angle) * 70, y: neighbor.position('y') + Math.sin(angle) * 70 } : { x: cy.width() / 2 + Math.cos(angle) * 95, y: cy.height() / 2 + Math.sin(angle) * 95 };
-        additions.push({ data, position });
+        const region = Number(node.region);
+        let position;
+        if (node.region != null && Number.isInteger(region) && region >= 0 && region < 4) {
+          position = positionInRegion(region, Number(node.regionIndex ?? 0), cy.width(), cy.height());
+        } else {
+          const linkedEdge = (graph.edges ?? []).find(edge => String(edge.source) === id || String(edge.target) === id);
+          const neighborId = linkedEdge ? (String(linkedEdge.source) === id ? String(linkedEdge.target) : String(linkedEdge.source)) : null;
+          const neighbor = neighborId ? cy.getElementById(neighborId) : null;
+          const angle = cy.nodes().length * 2.399963;
+          position = neighbor?.length ? { x: neighbor.position('x') + Math.cos(angle) * 70, y: neighbor.position('y') + Math.sin(angle) * 70 } : { x: cy.width() / 2 + Math.cos(angle) * 95, y: cy.height() / 2 + Math.sin(angle) * 95 };
+        }
+        additions.push({ data, position, classes: `${graphClasses(node.display_status, 'node')} ${node.region != null ? 'scenario-node' : ''}`.trim() });
       }
     }
     if (additions.length) cy.add(additions);
@@ -122,11 +154,11 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const timestamp = typeof edge.timestamp === 'string' ? edge.timestamp : null;
       const data = { id, source: String(edge.source), target: String(edge.target), amount, timestamp, title: `${money(amount)} · ${timestamp ?? 'time unavailable'}`, color, clusterId: String(edge.cluster_id ?? cluster?.id ?? ''), width: Math.max(1.5, Math.min(7, 1.5 + Math.log10(Math.max(1, amount || 1) / 10000))) };
       const existing = cy.getElementById(id);
-      if (existing.length) existing.data(data);
-      else edgeAdditions.push({ data });
+      if (existing.length) existing.data(data).removeClass('normal-transaction pattern-transaction temporary-transaction suspicious-transaction retained-suspicious-path').addClass(graphClasses(edge.display_status));
+      else edgeAdditions.push({ data, classes: graphClasses(edge.display_status) });
     }
     if (edgeAdditions.length) cy.add(edgeAdditions);
-    if (graphWasEmpty && cy.nodes().length && !didInitialLiveFit.current) { cy.fit(undefined, 45); didInitialLiveFit.current = true; }
+    if (!regions?.length && graphWasEmpty && cy.nodes().length && !didInitialLiveFit.current) { cy.fit(undefined, 45); didInitialLiveFit.current = true; }
     cy.elements().removeClass('replay-current');
     if (latestTransactionId) cy.getElementById(String(latestTransactionId)).addClass('replay-current');
     cy.elements().removeClass('active dimmed');
@@ -139,7 +171,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       cy.elements().difference(active).addClass('dimmed');
       active.addClass('active');
     }
-  }, [incremental, graph, clusters, latestTransactionId]);
+  }, [incremental, graph, clusters, latestTransactionId, regions]);
 
   useEffect(() => {
     const cy = cyRef.current; if (!cy) return;
@@ -185,15 +217,22 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
     const element = container.current;
     const cy = cyRef.current;
     if (!element || !cy || typeof ResizeObserver === 'undefined') return undefined;
-    const observer = new ResizeObserver(() => { if (element.clientWidth && element.clientHeight) cy.resize(); });
+    const observer = new ResizeObserver(() => {
+      if (!element.clientWidth || !element.clientHeight) return;
+      cy.resize();
+      if (regions?.length === 4) cy.nodes().filter(node => node.data('region') != null).forEach(node => {
+        node.position(positionInRegion(Number(node.data('region')), Number(node.data('regionIndex') ?? 0), cy.width(), cy.height()));
+      });
+    });
     observer.observe(element);
     return () => observer.disconnect();
-  }, [incremental]);
+  }, [incremental, regions]);
 
   return <section className="graph-card">
     <div className="graph-heading"><div><span className="eyebrow">TRANSACTION NETWORK</span><h3>{selected ? <>{selected.id} <small>· {Array.isArray(selected.accounts) ? selected.accounts.length : 0} ACCOUNTS</small></> : 'Cluster graph'}</h3></div><div className="graph-controls"><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() * 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom in">+</button><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() / 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom out">−</button><button onClick={() => cyRef.current?.fit(undefined, 45)} aria-label="Fit graph">Fit</button><button onClick={() => { const cy = cyRef.current; if (cy) { cy.reset(); cy.fit(undefined, 45); } }} aria-label="Reset graph view">Reset</button></div></div>
-    <div className="graph-stage">
-      <div className="graph-canvas" ref={container}/>
+    <div className={`graph-stage ${regions?.length ? 'graph-regional-stage' : ''}`}>
+      {regions?.length === 4 && <div className="graph-region-grid" aria-hidden="true">{regions.map(region => <div className="graph-region-label" key={region.id}>{region.label}</div>)}</div>}
+      <div className={`graph-canvas ${regions?.length ? 'graph-regional-canvas' : ''}`} ref={container}/>
       {(graphError || !(graph.nodes ?? []).some(node => node?.id != null)) && <div className="graph-empty" role={graphError ? 'alert' : 'status'}>{graphError || 'No transaction graph in this run.'}</div>}
     </div>
     <div className="graph-legend"><span className="account-legend"><i/>ACCOUNT · NODE</span><span className="transfer-legend"><i/>TRANSFER · ARROW</span><span className="highlight-legend"><i/>SELECTED CLUSTER</span><span className="legend-separator" aria-hidden="true"/>{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
