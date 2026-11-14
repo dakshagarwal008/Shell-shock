@@ -9,6 +9,8 @@ Shell Shocker analyzes transaction networks to surface suspicious account cluste
 - Groups related detections into account clusters and ranks them with the backend risk score.
 - Displays backend-generated explanations and risk factors for each cluster alert.
 - Supports account search, risk and typology filters, sorting, and graph zoom, pan, and selection.
+- Opens a dedicated Investigation Mode for each selected cluster alert, with chronological money trail replay, timeline controls, and evidence-linked graph highlighting.
+- Exports the investigation view through the browser's print dialog, including Save as PDF where supported.
 - Compares graph detection with the threshold baseline using precision, recall, F1, and TP/FP/FN counts.
 
 Severity labels in the dashboard are display bands derived from each backend risk score. The score and backend scoring logic are unchanged. The current data does not provide investigation workflow statuses, so the dashboard does not show a status field.
@@ -47,6 +49,8 @@ The frontend fetches `/data/clusters.json`, `/data/graph.json`, and `/data/metri
 - `metrics.json`: `baseline`, `graph_method`, and `dataset` evaluation data.
 
 The UI derives transaction periods from graph edge timestamps. It does not invent timestamps, status values, evidence, accounts, or transactions when the backend omits them.
+
+Investigation replay uses the selected cluster's transaction IDs and matching graph edges, ordered by their supplied timestamps. Records without usable timestamps remain visible in the report but are excluded from timed playback. Detection explanations are cluster-level summaries from the backend; account references in each summary item can focus the matching account nodes and connected cluster transfers.
 
 ## Run locally
 

@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
 import { TYPOLOGY, money } from '../utils/clusterDisplay.js';
 
-export default function GraphView({ graph, clusters, selected, graphItem, onSelect }) {
+function focusGraph(cy, elements, padding = 70) {
+  if (!elements?.length) return;
+  if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) cy.fit(elements, padding);
+  else cy.animate({ fit: { eles: elements, padding }, duration: 350 });
+}
+
+export default function GraphView({ graph, clusters, selected, graphItem, onSelect, replayTransactionId = null, evidenceAccountIds = [] }) {
   const container = useRef(null);
   const cyRef = useRef(null);
   const selectedRef = useRef(selected);
@@ -36,7 +42,11 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       { selector: 'node.active', style: { 'background-color': 'data(color)', 'background-opacity': 0.42, 'border-color': 'data(color)', 'border-width': 3, width: 43, height: 43 } },
       { selector: 'node.node-focus', style: { 'border-color': '#ffffff', 'border-width': 4, width: 47, height: 47 } },
       { selector: 'edge.connected-focus', style: { opacity: 1, width: 5 } },
-      { selector: 'edge.active', style: { opacity: 1, width: 'mapData(width, 1, 7, 2.5, 8)' } }
+      { selector: 'edge.active', style: { opacity: 1, width: 'mapData(width, 1, 7, 2.5, 8)' } },
+      { selector: 'node.replay-account', style: { 'background-opacity': 0.82, 'border-width': 4, width: 49, height: 49, 'shadow-blur': 12, 'shadow-color': 'data(color)', 'shadow-opacity': 0.48 } },
+      { selector: 'edge.replay-current', style: { opacity: 1, width: 8, 'shadow-blur': 10, 'shadow-color': 'data(color)', 'shadow-opacity': 0.55 } },
+      { selector: 'node.evidence-account', style: { 'border-color': '#e9f0ed', 'border-width': 3, 'border-style': 'dashed', width: 46, height: 46 } },
+      { selector: 'edge.evidence-transfer', style: { opacity: 1, width: 5, 'line-style': 'dashed' } }
     ] }); } catch (error) { setGraphError(error.message || 'The transaction graph could not be rendered.'); return undefined; }
     setGraphError('');
     cyRef.current = cy;
@@ -48,7 +58,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const edgesInCluster = cy.edges().filter(e => transactionIds.includes(e.id()) || e.data('clusterId') === cluster.id);
       const active = nodesInCluster.union(edgesInCluster);
       cy.elements().difference(active).addClass('dimmed'); active.addClass('active');
-      if (active.length) cy.animate({ fit: { eles: active, padding: 70 }, duration: 350 });
+      focusGraph(cy, active);
     };
     cy.on('tap', 'node, edge', event => {
       const element = event.target;
@@ -77,8 +87,36 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
     const edges = cy.edges().filter(e => transactionIds.includes(e.id()) || e.data('clusterId') === selected.id);
     const active = nodes.union(edges); cy.elements().difference(active).addClass('dimmed'); active.addClass('active');
     if (graphItem?.type === 'account') { const focused = cy.getElementById(graphItem.id); if (focused.length) { focused.addClass('node-focus'); focused.connectedEdges().addClass('connected-focus'); } }
-    if (active.length) cy.animate({ fit: { eles: active, padding: 70 }, duration: 350 });
+    focusGraph(cy, active);
   }, [selected, graphItem]);
+
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.elements().removeClass('replay-current replay-account');
+    if (!replayTransactionId) return;
+    const transaction = cy.getElementById(String(replayTransactionId));
+    if (!transaction.length || !transaction.isEdge()) return;
+    transaction.addClass('replay-current');
+    transaction.source().addClass('replay-account');
+    transaction.target().addClass('replay-account');
+  }, [replayTransactionId, graph, clusters]);
+
+  useEffect(() => {
+    const cy = cyRef.current;
+    if (!cy) return;
+    cy.elements().removeClass('evidence-account evidence-transfer');
+    if (!selected || !Array.isArray(evidenceAccountIds) || !evidenceAccountIds.length) return;
+    const accounts = new Set(evidenceAccountIds.map(String));
+    const transactionIds = new Set(Array.isArray(selected.transaction_ids) ? selected.transaction_ids.map(String) : []);
+    const accountNodes = cy.nodes().filter(node => accounts.has(node.id()));
+    const relatedEdges = cy.edges().filter(edge => {
+      const inCluster = transactionIds.has(edge.id()) || edge.data('clusterId') === selected.id;
+      return inCluster && (accounts.has(edge.data('source')) || accounts.has(edge.data('target')));
+    });
+    accountNodes.addClass('evidence-account');
+    relatedEdges.addClass('evidence-transfer');
+  }, [evidenceAccountIds, selected, graph, clusters]);
 
   return <section className="graph-card">
     <div className="graph-heading"><div><span className="eyebrow">TRANSACTION NETWORK</span><h3>{selected ? <>{selected.id} <small>· {Array.isArray(selected.accounts) ? selected.accounts.length : 0} ACCOUNTS</small></> : 'Cluster graph'}</h3></div><div className="graph-controls"><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() * 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom in">+</button><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() / 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom out">−</button><button onClick={() => cyRef.current?.fit(undefined, 45)} aria-label="Fit graph">Fit</button><button onClick={() => { const cy = cyRef.current; if (cy) { cy.reset(); cy.fit(undefined, 45); } }} aria-label="Reset graph view">Reset</button></div></div>
