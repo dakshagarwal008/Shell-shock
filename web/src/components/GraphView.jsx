@@ -39,8 +39,8 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
     });
     let cy;
     try { cy = cytoscape({ container: container.current, elements: [...nodes, ...edges], minZoom: 0.35, maxZoom: 2.8, wheelSensitivity: 0.18, layout: { name: 'cose', animate: false, fit: true, padding: 38, nodeRepulsion: 6500, idealEdgeLength: 115, gravity: 0.18, numIter: nodes.length > 300 ? 250 : 700 }, style: [
-      { selector: 'node', style: { label: 'data(label)', width: 36, height: 36, 'background-color': 'data(color)', 'background-opacity': 0.2, 'border-width': 2, 'border-color': 'data(color)', color: '#e3edf1', 'font-size': 10, 'min-zoomed-font-size': 8, 'font-family': 'IBM Plex Mono, monospace', 'text-valign': 'center', 'text-halign': 'center', 'text-outline-color': '#101920', 'text-outline-width': 2 } },
-      { selector: 'edge', style: { 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'line-color': 'data(color)', 'target-arrow-color': 'data(color)', width: 'data(width)', opacity: 0.8, label: incremental ? '' : 'data(title)', 'font-size': 8, 'min-zoomed-font-size': 7, 'font-family': 'IBM Plex Mono, monospace', color: '#b4c3cb', 'text-background-color': '#101920', 'text-background-opacity': 0.86, 'text-background-padding': 2, 'text-rotation': 'autorotate' } },
+      { selector: 'node', style: { label: 'data(label)', width: 36, height: 36, 'background-color': 'data(color)', 'background-opacity': 0.2, 'border-width': 2, 'border-color': 'data(color)', color: '#e3edf1', 'font-size': 11, 'min-zoomed-font-size': 9, 'font-family': 'IBM Plex Mono, monospace', 'text-valign': 'center', 'text-halign': 'center', 'text-outline-color': '#101920', 'text-outline-width': 2 } },
+      { selector: 'edge', style: { 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'line-color': 'data(color)', 'target-arrow-color': 'data(color)', width: 'data(width)', opacity: 0.8, label: '', 'font-size': 9, 'min-zoomed-font-size': 8, 'font-family': 'IBM Plex Mono, monospace', color: '#b4c3cb', 'text-background-color': '#101920', 'text-background-opacity': 0.9, 'text-background-padding': 2, 'text-rotation': 'autorotate' } },
       { selector: '.dimmed', style: { opacity: 0.12 } },
       { selector: 'node.active', style: { 'background-color': 'data(color)', 'background-opacity': 0.42, 'border-color': 'data(color)', 'border-width': 3, width: 43, height: 43 } },
       { selector: 'node.node-focus', style: { 'border-color': '#ffffff', 'border-width': 4, width: 47, height: 47 } },
@@ -77,7 +77,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       else setNotice(`${element.isNode() ? 'Account' : 'Transaction'} ${element.data('label') ?? element.id()} is not linked to a cluster.`);
     });
     cy.on('mouseover', 'node, edge', event => { const item = event.target; setNotice(item.isNode() ? `Account ${item.data('label')} · risk value ${item.data('risk')}` : `Transaction ${item.id()} · ${money(item.data('amount'))} · ${item.data('title')}`); });
-    cy.on('mouseout', 'node, edge', () => setNotice('Click a node or transaction to inspect its details. Drag to pan; scroll to zoom.'));
+    cy.on('mouseout', 'node, edge', () => setNotice('Accounts are nodes; arrows show transfer direction. Brighter edges belong to the selected cluster; edge width represents amount. Drag to pan and scroll to zoom.'));
     applySelection(selectedRef.current);
     return () => { cy.destroy(); cyRef.current = null; };
   }, [incremental ? null : graph, incremental ? null : clusters, onSelect, incremental]);
@@ -196,7 +196,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       <div className="graph-canvas" ref={container}/>
       {(graphError || !(graph.nodes ?? []).some(node => node?.id != null)) && <div className="graph-empty" role={graphError ? 'alert' : 'status'}>{graphError || 'No transaction graph in this run.'}</div>}
     </div>
-    <div className="graph-legend"><span className="account-legend"><i/>ACCOUNT NODE</span><span className="transfer-legend"><i/>DIRECTED TRANSFER</span><span className="legend-separator" aria-hidden="true"/>{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
-    <div className="graph-status" aria-live="polite">{notice || 'Click a node or transaction to inspect its details. Drag to pan; scroll to zoom.'}</div>
+    <div className="graph-legend"><span className="account-legend"><i/>ACCOUNT · NODE</span><span className="transfer-legend"><i/>TRANSFER · ARROW</span><span className="highlight-legend"><i/>SELECTED CLUSTER</span><span className="legend-separator" aria-hidden="true"/>{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
+    <div className="graph-status" aria-live="polite">{notice || 'Accounts are nodes; arrows show transfer direction. Brighter edges belong to the selected cluster; edge width represents amount. Drag to pan and scroll to zoom.'}</div>
   </section>;
 }

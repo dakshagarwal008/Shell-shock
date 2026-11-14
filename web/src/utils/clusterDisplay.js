@@ -1,8 +1,8 @@
 export const TYPOLOGY = {
-  fan_out_dispersion: { label: 'Fan-out dispersion', color: '#62c7b4', short: 'DISPERSION' },
-  fan_in_aggregation: { label: 'Fan-in aggregation', color: '#78a9ed', short: 'AGGREGATION' },
-  cyclic_round_tripping: { label: 'Round-tripping cycle', color: '#b19be5', short: 'ROUND-TRIPPING' },
-  rapid_pass_through: { label: 'Rapid pass-through', color: '#62bfd4', short: 'PASS-THROUGH' }
+  fan_out_dispersion: { label: 'Fan-out dispersion', color: '#62c7b4', short: 'DISPERSION', description: 'One account distributes money to multiple accounts.' },
+  fan_in_aggregation: { label: 'Fan-in aggregation', color: '#78a9ed', short: 'AGGREGATION', description: 'Multiple accounts send money into one account.' },
+  cyclic_round_tripping: { label: 'Round-tripping cycle', color: '#b19be5', short: 'ROUND-TRIPPING', description: 'Money moves through accounts and returns to an earlier account.' },
+  rapid_pass_through: { label: 'Rapid pass-through', color: '#62bfd4', short: 'PASS-THROUGH', description: 'Money enters an account and quickly moves to another account.' }
 };
 
 // Display-only bands based on the backend-provided score; scoring stays in the backend.

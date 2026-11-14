@@ -2,7 +2,7 @@ import { TYPOLOGY, RISK_BANDS, formatTimestamp, money, riskBand } from '../utils
 
 export function TypologyBadge({ value }) {
   const typology = TYPOLOGY[value] ?? { label: value?.replaceAll('_', ' ') ?? 'Unknown', color: '#9aaaba' };
-  return <span className="typology-badge" style={{ '--type-color': typology.color }}><i/>{typology.label}</span>;
+  return <span className="typology-badge" style={{ '--type-color': typology.color }} title={typology.description ?? typology.label} aria-label={`${typology.label}. ${typology.description ?? ''}`}><i aria-hidden="true"/>{typology.label}</span>;
 }
 
 function periodLabel(period) {
@@ -47,7 +47,7 @@ export default function ClusterTable({
         const accountCount = Array.isArray(cluster.accounts) ? cluster.accounts.length : 0;
         const transactionCount = Array.isArray(cluster.transaction_ids) ? cluster.transaction_ids.length : 0;
         return <button className={`cluster-row alert-row ${cluster.id === selectedId ? 'selected' : ''}`} style={{ '--cluster-color': typologyColor }} key={cluster.id} onClick={() => onSelect(cluster.id)} aria-pressed={cluster.id === selectedId}>
-          <div className="row-top"><span className="rank">{String(cluster.rank ?? index + 1).padStart(2, '0')}</span><span className="cluster-id"><small>CLUSTER</small> {cluster.id}</span><span className={`severity-badge ${band?.id ?? 'unavailable'}`} title={score == null ? 'Risk severity unavailable' : 'Severity band derived from the backend risk score'} style={band ? { '--severity-color': band.color } : undefined}>{band?.label ?? 'Unavailable'}</span><span className="risk-score" style={{ color: band?.color ?? 'var(--muted)' }}>{score ?? '—'}<small>/100</small></span></div>
+          <div className="row-top"><span className="rank">{String(cluster.rank ?? index + 1).padStart(2, '0')}</span><span className="cluster-id"><small>CLUSTER</small> {cluster.id}</span><span className={`severity-badge ${band?.id ?? 'unavailable'}`} title={score == null ? 'Risk severity unavailable' : 'Severity band derived from the backend risk score'} style={band ? { '--severity-color': band.color } : undefined}>{band?.label ?? 'Unavailable'}</span><span className="risk-score" title="Backend suspiciousness score for prioritizing review; not proof of criminal activity." aria-label={`Risk score ${score ?? 'unavailable'} out of 100`} style={{ color: band?.color ?? 'var(--muted)' }}>{score ?? '—'}<small>/100</small></span></div>
           <div className="risk-track"><i style={{ width: `${Math.max(0, Math.min(100, score ?? 0))}%`, background: band?.color ?? '#52636a' }}/></div>
           <div className="alert-typologies">{clusterTypes.length ? clusterTypes.map(value => <TypologyBadge key={value} value={value}/>) : <span className="muted compact">Typology unavailable</span>}</div>
           <div className="alert-data-grid"><div><small>TRANSACTION AMOUNT</small><b>{money(cluster.total_amount)}</b></div><div><small>ACCOUNTS / TRANSFERS</small><b>{accountCount} / {transactionCount}</b></div><div className="alert-period"><small>TRANSACTION PERIOD</small><b>{periodLabel(periodByCluster?.[cluster.id])}</b></div></div>

@@ -45,14 +45,14 @@ export default function DetailPanel({ cluster, graphItem, period, transactions =
   return <section className="detail-card investigation-card" aria-label={`Investigation for cluster alert ${cluster.id}`}>
     <div className="investigation-heading">
       <div><span className="eyebrow">CLUSTER ALERT · {cluster.id}</span><h3>Cluster money trail</h3><span className="investigation-rank">DETECTION RANK {String(cluster.rank ?? '—').padStart(2, '0')}</span>{onInvestigate && !investigationMode && <button className="open-investigation-button" onClick={onInvestigate}>Open Investigation Mode <span aria-hidden="true">↗</span></button>}</div>
-      <div className="investigation-score" style={band ? { '--severity-color': band.color } : undefined}><small>RISK SCORE</small><b>{cluster.risk_score ?? '—'}<span>/100</span></b><span className={`severity-badge ${band?.id ?? 'unavailable'}`}>{band?.label ?? 'Unavailable'}</span></div>
+      <div className="investigation-score" style={band ? { '--severity-color': band.color } : undefined}><small title="Backend suspiciousness score used to prioritize investigation. It is not proof of criminal activity.">RISK SCORE</small><b title="A prioritization score, not a determination of criminal activity.">{cluster.risk_score ?? '—'}<span>/100</span></b><span className={`severity-badge ${band?.id ?? 'unavailable'}`}>{band?.label ?? 'Unavailable'}</span></div>
     </div>
 
     <div className="investigation-typologies"><span className="detail-subhead-label">DETECTED TYPOLOGY</span>{typologies.length ? <div className="alert-typologies">{typologies.map(value => <TypologyBadge key={value} value={value}/>)}</div> : <span className="muted compact">Unavailable</span>}</div>
 
     <div className="investigation-stats">
-      <div><small>TOTAL TRANSACTION AMOUNT</small><b>{money(cluster.total_amount)}</b></div>
-      <div><small>TIME SPAN</small><b>{cluster.time_span_hours != null ? `${cluster.time_span_hours} hours` : 'Unavailable'}</b></div>
+      <div title="Sum of the transaction amounts included in this detected cluster."><small>TOTAL TRANSACTION AMOUNT</small><b>{money(cluster.total_amount)}</b></div>
+      <div title="Elapsed time between the earliest and latest transaction in this cluster."><small>TIME SPAN</small><b>{cluster.time_span_hours != null ? `${cluster.time_span_hours} hours` : 'Unavailable'}</b></div>
       <div><small>TRANSACTION PERIOD</small><b>{periodLabel(period)}</b></div>
       <div><small>ACCOUNTS / TRANSACTIONS</small><b>{accounts.length} / {transactionIds.length}</b></div>
     </div>
