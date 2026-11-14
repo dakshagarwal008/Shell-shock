@@ -1,0 +1,12 @@
+{
+  "nodes": [
+    { "id": "A12", "label": "A12", "cluster_ids": ["C-001"], "risk": 0.92 }, { "id": "A47", "label": "A47", "cluster_ids": ["C-001"], "risk": 0.84 }, { "id": "A88", "label": "A88", "cluster_ids": ["C-001"], "risk": 0.89 },
+    { "id": "A21", "label": "A21", "cluster_ids": ["C-002"], "risk": 0.84 }, { "id": "A31", "label": "A31", "cluster_ids": ["C-002"], "risk": 0.74 }, { "id": "A32", "label": "A32", "cluster_ids": ["C-002"], "risk": 0.78 }, { "id": "A33", "label": "A33", "cluster_ids": ["C-002"], "risk": 0.69 },
+    { "id": "A55", "label": "A55", "cluster_ids": ["C-003"], "risk": 0.78 }, { "id": "A56", "label": "A56", "cluster_ids": ["C-003"], "risk": 0.71 }, { "id": "A61", "label": "A61", "cluster_ids": ["C-003"], "risk": 0.68 }
+  ],
+  "edges": [
+    { "id": "T1001", "source": "A12", "target": "A47", "amount": 160000, "timestamp": "2026-03-02T10:15:00", "cluster_id": "C-001" }, { "id": "T1044", "source": "A47", "target": "A88", "amount": 160000, "timestamp": "2026-03-03T08:30:00", "cluster_id": "C-001" }, { "id": "T1090", "source": "A88", "target": "A12", "amount": 160000, "timestamp": "2026-03-03T22:10:00", "cluster_id": "C-001" },
+    { "id": "T2001", "source": "A21", "target": "A31", "amount": 125000, "timestamp": "2026-04-11T09:00:00", "cluster_id": "C-002" }, { "id": "T2002", "source": "A21", "target": "A32", "amount": 110000, "timestamp": "2026-04-11T09:05:00", "cluster_id": "C-002" }, { "id": "T2003", "source": "A21", "target": "A33", "amount": 90000, "timestamp": "2026-04-11T09:12:00", "cluster_id": "C-002" },
+    { "id": "T3001", "source": "A55", "target": "A56", "amount": 110000, "timestamp": "2026-05-18T14:20:00", "cluster_id": "C-003" }, { "id": "T3002", "source": "A56", "target": "A61", "amount": 100000, "timestamp": "2026-05-18T15:42:00", "cluster_id": "C-003" }
+  ]
+}

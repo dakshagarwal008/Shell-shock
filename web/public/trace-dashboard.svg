@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">TRACE dashboard preview</title>
+  <desc id="desc">A mockup of the TRACE financial crime intelligence dashboard with KPI cards, cluster list, network graph, and detail panel.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0d1520"/>
+      <stop offset="1" stop-color="#0b1118"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#101c27"/>
+      <stop offset="1" stop-color="#0e1720"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#02070c" flood-opacity="0.45"/>
+    </filter>
+    <style>
+      .label { font: 700 12px 'Segoe UI', sans-serif; letter-spacing: 3px; fill: #899ba7; }
+      .title { font: 800 28px 'Segoe UI', sans-serif; fill: #edf4f7; }
+      .body { font: 500 14px 'Segoe UI', sans-serif; fill: #b7c8d1; }
+      .mono { font: 600 12px 'Consolas', monospace; fill: #dfeaf1; }
+      .soft { fill: #758694; }
+      .green { fill: #7bd2a6; }
+      .orange { fill: #ef9c66; }
+      .purple { fill: #bc9cf4; }
+      .gold { fill: #e9c36b; }
+      .line { stroke: #21323d; stroke-width: 1; }
+      .panel { fill: url(#panel); stroke: #2b3d4a; stroke-width: 1; }
+      .chip { fill: #12212c; stroke: #2d3e4a; }
+      .mint { fill: #183a2e; }
+      .muted { fill: #0f171d; }
+    </style>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <g filter="url(#shadow)">
+    <rect x="34" y="26" width="1132" height="668" rx="12" fill="url(#panel)" stroke="#233744"/>
+  </g>
+
+  <text x="74" y="70" class="label">TRACE · FINANCIAL CRIME INTELLIGENCE</text>
+  <text x="74" y="118" class="title">Follow the money.</text>
+  <text x="74" y="148" class="body">Temporal graph detection for layered network risk.</text>
+
+  <g>
+    <rect x="74" y="180" width="1020" height="120" rx="10" class="panel"/>
+    <text x="102" y="214" class="label">MODEL PERFORMANCE</text>
+    <text x="102" y="243" class="title" style="font-size:26px;">0.54 → 0.81</text>
+    <text x="355" y="218" class="label">BASELINE</text>
+    <text x="356" y="250" class="mono" style="font-size:18px; fill:#edf4f7;">Precision 0.62</text>
+    <text x="356" y="274" class="mono" style="font-size:18px; fill:#edf4f7;">Recall 0.48</text>
+    <text x="356" y="298" class="mono" style="font-size:18px; fill:#edf4f7;">F1 0.54</text>
+    <text x="520" y="218" class="label">GRAPH METHOD</text>
+    <text x="521" y="250" class="mono" style="font-size:18px; fill:#7bd2a6;">Precision 0.86</text>
+    <text x="521" y="274" class="mono" style="font-size:18px; fill:#7bd2a6;">Recall 0.76</text>
+    <text x="521" y="298" class="mono" style="font-size:18px; fill:#7bd2a6;">F1 0.81</text>
+    <rect x="890" y="210" width="154" height="64" rx="8" fill="#163828" stroke="#29533d"/>
+    <text x="930" y="242" class="mono" style="font-size:12px; fill:#7bd2a6;">+27 pts</text>
+    <text x="930" y="262" class="label">F1 LIFT</text>
+  </g>
+
+  <g>
+    <rect x="74" y="330" width="330" height="302" rx="10" class="panel"/>
+    <rect x="74" y="330" width="330" height="36" class="chip"/>
+    <text x="96" y="352" class="label">RANKED CLUSTERS</text>
+    <text x="343" y="352" class="label" style="fill:#94a6b0;">HIGHER RISK ↑</text>
+
+    <g transform="translate(94 380)">
+      <rect x="0" y="0" width="290" height="56" rx="8" fill="#16242d" stroke="#2a3944"/>
+      <text x="14" y="20" class="mono" style="font-size:10px; fill:#96a9b6;">01</text>
+      <text x="50" y="20" class="mono" style="font-size:11px; fill:#dfeaf1;">C-001</text>
+      <text x="208" y="20" class="mono" style="font-size:16px; fill:#ef7c72;">92</text>
+      <text x="242" y="20" class="mono" style="font-size:10px; fill:#8ea1aa;">/100</text>
+      <rect x="14" y="31" width="256" height="4" rx="2" fill="#243642"/>
+      <rect x="14" y="31" width="236" height="4" rx="2" fill="#ef7c72"/>
+      <text x="14" y="49" class="mono" style="font-size:9px; fill:#bc9cf4;">Round-tripping cycle</text>
+      <text x="210" y="49" class="mono" style="font-size:9px; fill:#93a4af;">3 accounts</text>
+    </g>
+
+    <g transform="translate(94 448)">
+      <rect x="0" y="0" width="290" height="56" rx="8" fill="#16242d" stroke="#2a3944"/>
+      <text x="14" y="20" class="mono" style="font-size:10px; fill:#96a9b6;">02</text>
+      <text x="50" y="20" class="mono" style="font-size:11px; fill:#dfeaf1;">C-002</text>
+      <text x="208" y="20" class="mono" style="font-size:16px; fill:#e7ba68;">84</text>
+      <text x="242" y="20" class="mono" style="font-size:10px; fill:#8ea1aa;">/100</text>
+      <rect x="14" y="31" width="256" height="4" rx="2" fill="#243642"/>
+      <rect x="14" y="31" width="216" height="4" rx="2" fill="#e7ba68"/>
+      <text x="14" y="49" class="mono" style="font-size:9px; fill:#ef9c66;">Fan-out dispersion</text>
+      <text x="214" y="49" class="mono" style="font-size:9px; fill:#93a4af;">4 accounts</text>
+    </g>
+
+    <g transform="translate(94 516)">
+      <rect x="0" y="0" width="290" height="56" rx="8" fill="#16242d" stroke="#2a3944"/>
+      <text x="14" y="20" class="mono" style="font-size:10px; fill:#96a9b6;">03</text>
+      <text x="50" y="20" class="mono" style="font-size:11px; fill:#dfeaf1;">C-003</text>
+      <text x="208" y="20" class="mono" style="font-size:16px; fill:#7bd2a6;">78</text>
+      <text x="242" y="20" class="mono" style="font-size:10px; fill:#8ea1aa;">/100</text>
+      <rect x="14" y="31" width="256" height="4" rx="2" fill="#243642"/>
+      <rect x="14" y="31" width="195" height="4" rx="2" fill="#7bd2a6"/>
+      <text x="14" y="49" class="mono" style="font-size:9px; fill:#e9c36b;">Rapid pass-through</text>
+      <text x="216" y="49" class="mono" style="font-size:9px; fill:#93a4af;">3 accounts</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="430" y="330" width="664" height="192" rx="10" class="panel"/>
+    <rect x="430" y="330" width="664" height="36" class="chip"/>
+    <text x="452" y="353" class="label">TRANSACTION NETWORK</text>
+    <text x="952" y="353" class="label" style="fill:#aebdca;">C-001 · 3 ACCOUNTS</text>
+
+    <g opacity="0.35">
+      <path d="M560 420 C620 370, 705 410, 760 432 S875 458, 980 420" stroke="#2a4755" stroke-width="3" fill="none"/>
+      <path d="M560 420 C640 500, 705 482, 760 450 S895 398, 960 434" stroke="#2a4755" stroke-width="3" fill="none"/>
+      <path d="M560 420 C630 446, 735 488, 770 520 S890 556, 980 518" stroke="#2a4755" stroke-width="3" fill="none"/>
+    </g>
+
+    <circle cx="580" cy="420" r="18" fill="#bc9cf4"/>
+    <circle cx="760" cy="438" r="18" fill="#bc9cf4"/>
+    <circle cx="978" cy="430" r="18" fill="#bc9cf4"/>
+    <text x="570" y="424" class="mono" style="font-size:10px; fill:#10171c;">A12</text>
+    <text x="750" y="442" class="mono" style="font-size:10px; fill:#10171c;">A47</text>
+    <text x="968" y="434" class="mono" style="font-size:10px; fill:#10171c;">A88</text>
+  </g>
+
+  <g>
+    <rect x="430" y="540" width="664" height="132" rx="10" class="panel"/>
+    <text x="452" y="570" class="label">CLUSTER INTELLIGENCE · C-001</text>
+    <text x="452" y="592" class="body" style="font-size:12px;">Funds move from A12 through A47 and A88 before returning to the source, forming a rapid closed loop that obscures the original path.</text>
+    <text x="452" y="630" class="label">WHY THIS CLUSTER WAS FLAGGED</text>
+    <rect x="452" y="640" width="160" height="8" rx="4" fill="#213642"/>
+    <rect x="452" y="640" width="130" height="8" rx="4" fill="#ef7c72"/>
+    <rect x="650" y="640" width="160" height="8" rx="4" fill="#213642"/>
+    <rect x="650" y="640" width="108" height="8" rx="4" fill="#bc9cf4"/>
+    <rect x="848" y="640" width="160" height="8" rx="4" fill="#213642"/>
+    <rect x="848" y="640" width="118" height="8" rx="4" fill="#7bd2a6"/>
+  </g>
+</svg>
