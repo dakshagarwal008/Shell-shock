@@ -1,5 +1,514 @@
 [
-  { "id": "C-001", "rank": 1, "risk_score": 92, "typologies": ["cyclic_round_tripping"], "accounts": ["A12", "A47", "A88"], "total_amount": 480000, "time_span_hours": 36, "summary": "Funds move from A12 through A47 and A88 before returning to the source, forming a rapid closed loop that obscures the original path.", "risk_factors": [{ "name": "Cycle closure", "weight": 0.3, "value": 1.0 }, { "name": "Amount velocity", "weight": 0.25, "value": 0.88 }, { "name": "Layer depth", "weight": 0.2, "value": 0.76 }], "transaction_ids": ["T1001", "T1044", "T1090"] },
-  { "id": "C-002", "rank": 2, "risk_score": 84, "typologies": ["fan_out_dispersion"], "accounts": ["A21", "A31", "A32", "A33"], "total_amount": 325000, "time_span_hours": 8, "summary": "A21 rapidly splits a large incoming payment across three accounts, a pattern consistent with dispersion to make funds harder to trace.", "risk_factors": [{ "name": "Fan-out ratio", "weight": 0.35, "value": 0.91 }, { "name": "Amount velocity", "weight": 0.25, "value": 0.74 }, { "name": "Short time window", "weight": 0.2, "value": 0.82 }], "transaction_ids": ["T2001", "T2002", "T2003"] },
-  { "id": "C-003", "rank": 3, "risk_score": 78, "typologies": ["rapid_pass_through"], "accounts": ["A55", "A56", "A61"], "total_amount": 210000, "time_span_hours": 2, "summary": "Value passes through two intermediary accounts in under two hours, with little sign of normal account activity between transfers.", "risk_factors": [{ "name": "Pass-through speed", "weight": 0.4, "value": 0.95 }, { "name": "Dormant intermediaries", "weight": 0.25, "value": 0.69 }, { "name": "Chain length", "weight": 0.2, "value": 0.72 }], "transaction_ids": ["T3001", "T3002"] }
+  {
+    "id": "C-001",
+    "rank": 1,
+    "risk_score": 97,
+    "typologies": [
+      "fan_in_aggregation",
+      "fan_out_dispersion",
+      "rapid_pass_through"
+    ],
+    "accounts": [
+      "A449",
+      "A450",
+      "A451",
+      "A452",
+      "A453",
+      "A454",
+      "A455",
+      "A456",
+      "A457",
+      "A458",
+      "A459",
+      "A460",
+      "A461",
+      "A462"
+    ],
+    "total_amount": 1235082.0,
+    "time_span_hours": 2.4,
+    "summary": "Rs 4.19L dispersed from A449 across 6 recipient accounts within 1.5 hours; Rs 4.05L aggregated from 6 sender accounts into A462 within 0.9 hours (100% burst concentration); Rs 1.91L relayed across a 3-hop mule chain (A449 -> A450 -> A456 -> A462) in 1.4 hours (96% amount retention); Rs 2.01L relayed across a 3-hop mule chain (A449 -> A451 -> A457 -> A462) in 1.1 hours (96% amount retention); Rs 2.15L relayed across a 3-hop mule chain (A449 -> A452 -> A458 -> A462) in 1.1 hours (96% amount retention); Rs 2.24L relayed across a 3-hop mule chain (A449 -> A453 -> A459 -> A462) in 1.5 hours (96% amount retention); Rs 2.12L relayed across a 3-hop mule chain (A449 -> A454 -> A460 -> A462) in 1.1 hours (96% amount retention); Rs 1.92L relayed across a 3-hop mule chain (A449 -> A455 -> A461 -> A462) in 0.9 hours (96% amount retention). Typologies: fan in aggregation, fan out dispersion, rapid pass through.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.95
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.967
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 1.0
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 1.0
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 1.0
+      }
+    ],
+    "transaction_ids": [
+      "T2858",
+      "T2859",
+      "T2860",
+      "T2861",
+      "T2862",
+      "T2863",
+      "T2864",
+      "T2865",
+      "T2866",
+      "T2867",
+      "T2868",
+      "T2869",
+      "T2870",
+      "T2871",
+      "T2872",
+      "T2873",
+      "T2874",
+      "T2875"
+    ]
+  },
+  {
+    "id": "C-002",
+    "rank": 2,
+    "risk_score": 88,
+    "typologies": [
+      "fan_out_dispersion"
+    ],
+    "accounts": [
+      "A405",
+      "A406",
+      "A407",
+      "A408",
+      "A409",
+      "A410",
+      "A411",
+      "A412",
+      "A413",
+      "A414",
+      "A415"
+    ],
+    "total_amount": 787568.0,
+    "time_span_hours": 4.3,
+    "summary": "Rs 7.88L dispersed from A405 across 10 recipient accounts within 4.3 hours. Typologies: fan out dispersion.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 1.0
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.94
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.875
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.786
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2819",
+      "T2820",
+      "T2821",
+      "T2822",
+      "T2823",
+      "T2824",
+      "T2825",
+      "T2826",
+      "T2827",
+      "T2828"
+    ]
+  },
+  {
+    "id": "C-003",
+    "rank": 3,
+    "risk_score": 76,
+    "typologies": [
+      "fan_out_dispersion"
+    ],
+    "accounts": [
+      "A396",
+      "A397",
+      "A398",
+      "A399",
+      "A400",
+      "A401",
+      "A402",
+      "A403",
+      "A404"
+    ],
+    "total_amount": 571229.0,
+    "time_span_hours": 2.9,
+    "summary": "Rs 5.71L dispersed from A396 across 8 recipient accounts within 2.9 hours. Typologies: fan out dispersion.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.8
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.96
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.635
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.643
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2811",
+      "T2812",
+      "T2813",
+      "T2814",
+      "T2815",
+      "T2816",
+      "T2817",
+      "T2818"
+    ]
+  },
+  {
+    "id": "C-004",
+    "rank": 4,
+    "risk_score": 76,
+    "typologies": [
+      "rapid_pass_through"
+    ],
+    "accounts": [
+      "A440",
+      "A441",
+      "A442",
+      "A443",
+      "A444"
+    ],
+    "total_amount": 371560.0,
+    "time_span_hours": 2.4,
+    "summary": "Rs 3.72L relayed across a 4-hop mule chain (A440 -> ... -> A444) in 2.4 hours (96% amount retention). Typologies: rapid pass through.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 1.0
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.967
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.413
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.357
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2851",
+      "T2852",
+      "T2853",
+      "T2854"
+    ]
+  },
+  {
+    "id": "C-005",
+    "rank": 5,
+    "risk_score": 75,
+    "typologies": [
+      "fan_in_aggregation"
+    ],
+    "accounts": [
+      "A416",
+      "A417",
+      "A418",
+      "A419",
+      "A420",
+      "A421",
+      "A422",
+      "A423",
+      "A424"
+    ],
+    "total_amount": 531713.0,
+    "time_span_hours": 3.1,
+    "summary": "Rs 5.32L aggregated from 8 sender accounts into A424 within 3.1 hours (100% burst concentration). Typologies: fan in aggregation.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.8
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.957
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.591
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.643
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2829",
+      "T2830",
+      "T2831",
+      "T2832",
+      "T2833",
+      "T2834",
+      "T2835",
+      "T2836"
+    ]
+  },
+  {
+    "id": "C-006",
+    "rank": 6,
+    "risk_score": 71,
+    "typologies": [
+      "rapid_pass_through"
+    ],
+    "accounts": [
+      "A445",
+      "A446",
+      "A447",
+      "A448"
+    ],
+    "total_amount": 259280.0,
+    "time_span_hours": 1.2,
+    "summary": "Rs 2.59L relayed across a 3-hop mule chain (A445 -> A446 -> A447 -> A448) in 1.2 hours (96% amount retention). Typologies: rapid pass through.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.95
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.983
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.288
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.286
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2855",
+      "T2856",
+      "T2857"
+    ]
+  },
+  {
+    "id": "C-007",
+    "rank": 7,
+    "risk_score": 70,
+    "typologies": [
+      "fan_in_aggregation"
+    ],
+    "accounts": [
+      "A425",
+      "A426",
+      "A427",
+      "A428",
+      "A429",
+      "A430",
+      "A431",
+      "A432"
+    ],
+    "total_amount": 495799.0,
+    "time_span_hours": 2.5,
+    "summary": "Rs 4.96L aggregated from 7 sender accounts into A432 within 2.5 hours (100% burst concentration). Typologies: fan in aggregation.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.7
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.965
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.551
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.571
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2837",
+      "T2838",
+      "T2839",
+      "T2840",
+      "T2841",
+      "T2842",
+      "T2843"
+    ]
+  },
+  {
+    "id": "C-008",
+    "rank": 8,
+    "risk_score": 64,
+    "typologies": [
+      "cyclic_round_tripping"
+    ],
+    "accounts": [
+      "A436",
+      "A437",
+      "A438",
+      "A439"
+    ],
+    "total_amount": 372900.0,
+    "time_span_hours": 28.8,
+    "summary": "Rs 3.73L moved in a 4-account cycle (A436 -> A437 -> A438 -> A439 -> A436) within 28.8 hours with 94% amount consistency. Typologies: cyclic round tripping.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.943
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.6
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.414
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.286
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2847",
+      "T2848",
+      "T2849",
+      "T2850"
+    ]
+  },
+  {
+    "id": "C-009",
+    "rank": 9,
+    "risk_score": 64,
+    "typologies": [
+      "cyclic_round_tripping"
+    ],
+    "accounts": [
+      "A433",
+      "A434",
+      "A435"
+    ],
+    "total_amount": 270600.0,
+    "time_span_hours": 21.7,
+    "summary": "Rs 2.71L moved in a 3-account cycle (A433 -> A434 -> A435 -> A433) within 21.7 hours with 96% amount consistency. Typologies: cyclic round tripping.",
+    "risk_factors": [
+      {
+        "name": "pattern_strength",
+        "weight": 0.35,
+        "value": 0.961
+      },
+      {
+        "name": "velocity_speed",
+        "weight": 0.25,
+        "value": 0.699
+      },
+      {
+        "name": "total_value",
+        "weight": 0.15,
+        "value": 0.301
+      },
+      {
+        "name": "network_size",
+        "weight": 0.15,
+        "value": 0.214
+      },
+      {
+        "name": "multi_typology",
+        "weight": 0.1,
+        "value": 0.5
+      }
+    ],
+    "transaction_ids": [
+      "T2844",
+      "T2845",
+      "T2846"
+    ]
+  }
 ]
