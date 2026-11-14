@@ -1,12 +1,1062 @@
 {
   "nodes": [
-    { "id": "A12", "label": "A12", "cluster_ids": ["C-001"], "risk": 0.92 }, { "id": "A47", "label": "A47", "cluster_ids": ["C-001"], "risk": 0.84 }, { "id": "A88", "label": "A88", "cluster_ids": ["C-001"], "risk": 0.89 },
-    { "id": "A21", "label": "A21", "cluster_ids": ["C-002"], "risk": 0.84 }, { "id": "A31", "label": "A31", "cluster_ids": ["C-002"], "risk": 0.74 }, { "id": "A32", "label": "A32", "cluster_ids": ["C-002"], "risk": 0.78 }, { "id": "A33", "label": "A33", "cluster_ids": ["C-002"], "risk": 0.69 },
-    { "id": "A55", "label": "A55", "cluster_ids": ["C-003"], "risk": 0.78 }, { "id": "A56", "label": "A56", "cluster_ids": ["C-003"], "risk": 0.71 }, { "id": "A61", "label": "A61", "cluster_ids": ["C-003"], "risk": 0.68 }
+    {
+      "id": "A396",
+      "label": "A396",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A397",
+      "label": "A397",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A398",
+      "label": "A398",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A399",
+      "label": "A399",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A400",
+      "label": "A400",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A401",
+      "label": "A401",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A402",
+      "label": "A402",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A403",
+      "label": "A403",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A404",
+      "label": "A404",
+      "cluster_ids": [
+        "C-003"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A405",
+      "label": "A405",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A406",
+      "label": "A406",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A407",
+      "label": "A407",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A408",
+      "label": "A408",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A409",
+      "label": "A409",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A410",
+      "label": "A410",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A411",
+      "label": "A411",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A412",
+      "label": "A412",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A413",
+      "label": "A413",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A414",
+      "label": "A414",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A415",
+      "label": "A415",
+      "cluster_ids": [
+        "C-002"
+      ],
+      "risk": 0.88
+    },
+    {
+      "id": "A416",
+      "label": "A416",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A417",
+      "label": "A417",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A418",
+      "label": "A418",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A419",
+      "label": "A419",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A420",
+      "label": "A420",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A421",
+      "label": "A421",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A422",
+      "label": "A422",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A423",
+      "label": "A423",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A424",
+      "label": "A424",
+      "cluster_ids": [
+        "C-005"
+      ],
+      "risk": 0.75
+    },
+    {
+      "id": "A425",
+      "label": "A425",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A426",
+      "label": "A426",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A427",
+      "label": "A427",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A428",
+      "label": "A428",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A429",
+      "label": "A429",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A430",
+      "label": "A430",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A431",
+      "label": "A431",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A432",
+      "label": "A432",
+      "cluster_ids": [
+        "C-007"
+      ],
+      "risk": 0.7
+    },
+    {
+      "id": "A433",
+      "label": "A433",
+      "cluster_ids": [
+        "C-009"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A434",
+      "label": "A434",
+      "cluster_ids": [
+        "C-009"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A435",
+      "label": "A435",
+      "cluster_ids": [
+        "C-009"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A436",
+      "label": "A436",
+      "cluster_ids": [
+        "C-008"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A437",
+      "label": "A437",
+      "cluster_ids": [
+        "C-008"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A438",
+      "label": "A438",
+      "cluster_ids": [
+        "C-008"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A439",
+      "label": "A439",
+      "cluster_ids": [
+        "C-008"
+      ],
+      "risk": 0.64
+    },
+    {
+      "id": "A440",
+      "label": "A440",
+      "cluster_ids": [
+        "C-004"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A441",
+      "label": "A441",
+      "cluster_ids": [
+        "C-004"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A442",
+      "label": "A442",
+      "cluster_ids": [
+        "C-004"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A443",
+      "label": "A443",
+      "cluster_ids": [
+        "C-004"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A444",
+      "label": "A444",
+      "cluster_ids": [
+        "C-004"
+      ],
+      "risk": 0.76
+    },
+    {
+      "id": "A445",
+      "label": "A445",
+      "cluster_ids": [
+        "C-006"
+      ],
+      "risk": 0.71
+    },
+    {
+      "id": "A446",
+      "label": "A446",
+      "cluster_ids": [
+        "C-006"
+      ],
+      "risk": 0.71
+    },
+    {
+      "id": "A447",
+      "label": "A447",
+      "cluster_ids": [
+        "C-006"
+      ],
+      "risk": 0.71
+    },
+    {
+      "id": "A448",
+      "label": "A448",
+      "cluster_ids": [
+        "C-006"
+      ],
+      "risk": 0.71
+    },
+    {
+      "id": "A449",
+      "label": "A449",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A450",
+      "label": "A450",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A451",
+      "label": "A451",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A452",
+      "label": "A452",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A453",
+      "label": "A453",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A454",
+      "label": "A454",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A455",
+      "label": "A455",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A456",
+      "label": "A456",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A457",
+      "label": "A457",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A458",
+      "label": "A458",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A459",
+      "label": "A459",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A460",
+      "label": "A460",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A461",
+      "label": "A461",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    },
+    {
+      "id": "A462",
+      "label": "A462",
+      "cluster_ids": [
+        "C-001"
+      ],
+      "risk": 0.97
+    }
   ],
   "edges": [
-    { "id": "T1001", "source": "A12", "target": "A47", "amount": 160000, "timestamp": "2026-03-02T10:15:00", "cluster_id": "C-001" }, { "id": "T1044", "source": "A47", "target": "A88", "amount": 160000, "timestamp": "2026-03-03T08:30:00", "cluster_id": "C-001" }, { "id": "T1090", "source": "A88", "target": "A12", "amount": 160000, "timestamp": "2026-03-03T22:10:00", "cluster_id": "C-001" },
-    { "id": "T2001", "source": "A21", "target": "A31", "amount": 125000, "timestamp": "2026-04-11T09:00:00", "cluster_id": "C-002" }, { "id": "T2002", "source": "A21", "target": "A32", "amount": 110000, "timestamp": "2026-04-11T09:05:00", "cluster_id": "C-002" }, { "id": "T2003", "source": "A21", "target": "A33", "amount": 90000, "timestamp": "2026-04-11T09:12:00", "cluster_id": "C-002" },
-    { "id": "T3001", "source": "A55", "target": "A56", "amount": 110000, "timestamp": "2026-05-18T14:20:00", "cluster_id": "C-003" }, { "id": "T3002", "source": "A56", "target": "A61", "amount": 100000, "timestamp": "2026-05-18T15:42:00", "cluster_id": "C-003" }
+    {
+      "id": "T2811",
+      "source": "A396",
+      "target": "A397",
+      "amount": 72101.0,
+      "timestamp": "2026-03-04T11:02:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2812",
+      "source": "A396",
+      "target": "A398",
+      "amount": 61190.0,
+      "timestamp": "2026-03-04T11:29:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2813",
+      "source": "A396",
+      "target": "A399",
+      "amount": 80848.0,
+      "timestamp": "2026-03-04T11:57:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2814",
+      "source": "A396",
+      "target": "A400",
+      "amount": 60691.0,
+      "timestamp": "2026-03-04T12:14:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2815",
+      "source": "A396",
+      "target": "A401",
+      "amount": 78336.0,
+      "timestamp": "2026-03-04T12:41:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2816",
+      "source": "A396",
+      "target": "A402",
+      "amount": 82555.0,
+      "timestamp": "2026-03-04T13:04:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2817",
+      "source": "A396",
+      "target": "A403",
+      "amount": 69247.0,
+      "timestamp": "2026-03-04T13:28:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2818",
+      "source": "A396",
+      "target": "A404",
+      "amount": 66261.0,
+      "timestamp": "2026-03-04T13:57:00",
+      "cluster_id": "C-003"
+    },
+    {
+      "id": "T2829",
+      "source": "A416",
+      "target": "A424",
+      "amount": 77305.0,
+      "timestamp": "2026-03-06T12:05:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2830",
+      "source": "A417",
+      "target": "A424",
+      "amount": 60172.0,
+      "timestamp": "2026-03-06T12:32:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2831",
+      "source": "A418",
+      "target": "A424",
+      "amount": 71886.0,
+      "timestamp": "2026-03-06T13:01:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2832",
+      "source": "A419",
+      "target": "A424",
+      "amount": 75080.0,
+      "timestamp": "2026-03-06T13:31:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2833",
+      "source": "A420",
+      "target": "A424",
+      "amount": 61340.0,
+      "timestamp": "2026-03-06T13:53:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2834",
+      "source": "A421",
+      "target": "A424",
+      "amount": 65014.0,
+      "timestamp": "2026-03-06T14:23:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2835",
+      "source": "A422",
+      "target": "A424",
+      "amount": 60036.0,
+      "timestamp": "2026-03-06T14:40:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2836",
+      "source": "A423",
+      "target": "A424",
+      "amount": 60880.0,
+      "timestamp": "2026-03-06T15:11:00",
+      "cluster_id": "C-005"
+    },
+    {
+      "id": "T2844",
+      "source": "A433",
+      "target": "A434",
+      "amount": 92000.0,
+      "timestamp": "2026-03-07T09:00:00",
+      "cluster_id": "C-009"
+    },
+    {
+      "id": "T2845",
+      "source": "A434",
+      "target": "A435",
+      "amount": 90200.0,
+      "timestamp": "2026-03-07T19:15:00",
+      "cluster_id": "C-009"
+    },
+    {
+      "id": "T2846",
+      "source": "A435",
+      "target": "A433",
+      "amount": 88400.0,
+      "timestamp": "2026-03-08T06:40:00",
+      "cluster_id": "C-009"
+    },
+    {
+      "id": "T2851",
+      "source": "A440",
+      "target": "A441",
+      "amount": 95000.0,
+      "timestamp": "2026-03-09T12:00:00",
+      "cluster_id": "C-004"
+    },
+    {
+      "id": "T2852",
+      "source": "A441",
+      "target": "A442",
+      "amount": 93580.0,
+      "timestamp": "2026-03-09T12:49:00",
+      "cluster_id": "C-004"
+    },
+    {
+      "id": "T2853",
+      "source": "A442",
+      "target": "A443",
+      "amount": 92180.0,
+      "timestamp": "2026-03-09T13:37:00",
+      "cluster_id": "C-004"
+    },
+    {
+      "id": "T2854",
+      "source": "A443",
+      "target": "A444",
+      "amount": 90800.0,
+      "timestamp": "2026-03-09T14:21:00",
+      "cluster_id": "C-004"
+    },
+    {
+      "id": "T2819",
+      "source": "A405",
+      "target": "A406",
+      "amount": 77079.0,
+      "timestamp": "2026-03-12T13:10:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2820",
+      "source": "A405",
+      "target": "A407",
+      "amount": 64516.0,
+      "timestamp": "2026-03-12T13:36:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2821",
+      "source": "A405",
+      "target": "A408",
+      "amount": 76676.0,
+      "timestamp": "2026-03-12T14:09:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2822",
+      "source": "A405",
+      "target": "A409",
+      "amount": 75551.0,
+      "timestamp": "2026-03-12T14:26:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2823",
+      "source": "A405",
+      "target": "A410",
+      "amount": 84309.0,
+      "timestamp": "2026-03-12T14:55:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2824",
+      "source": "A405",
+      "target": "A411",
+      "amount": 91090.0,
+      "timestamp": "2026-03-12T15:26:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2825",
+      "source": "A405",
+      "target": "A412",
+      "amount": 87105.0,
+      "timestamp": "2026-03-12T15:58:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2826",
+      "source": "A405",
+      "target": "A413",
+      "amount": 76875.0,
+      "timestamp": "2026-03-12T16:25:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2827",
+      "source": "A405",
+      "target": "A414",
+      "amount": 67846.0,
+      "timestamp": "2026-03-12T16:46:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2828",
+      "source": "A405",
+      "target": "A415",
+      "amount": 86521.0,
+      "timestamp": "2026-03-12T17:26:00",
+      "cluster_id": "C-002"
+    },
+    {
+      "id": "T2858",
+      "source": "A449",
+      "target": "A450",
+      "amount": 64713.0,
+      "timestamp": "2026-03-13T10:00:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2861",
+      "source": "A449",
+      "target": "A451",
+      "amount": 68372.0,
+      "timestamp": "2026-03-13T10:18:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2864",
+      "source": "A449",
+      "target": "A452",
+      "amount": 73122.0,
+      "timestamp": "2026-03-13T10:36:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2859",
+      "source": "A450",
+      "target": "A456",
+      "amount": 63420.0,
+      "timestamp": "2026-03-13T10:40:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2862",
+      "source": "A451",
+      "target": "A457",
+      "amount": 67000.0,
+      "timestamp": "2026-03-13T10:48:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2867",
+      "source": "A449",
+      "target": "A453",
+      "amount": 75961.0,
+      "timestamp": "2026-03-13T10:54:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2870",
+      "source": "A449",
+      "target": "A454",
+      "amount": 72062.0,
+      "timestamp": "2026-03-13T11:12:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2865",
+      "source": "A452",
+      "target": "A458",
+      "amount": 71660.0,
+      "timestamp": "2026-03-13T11:12:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2863",
+      "source": "A457",
+      "target": "A462",
+      "amount": 66000.0,
+      "timestamp": "2026-03-13T11:25:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2860",
+      "source": "A456",
+      "target": "A462",
+      "amount": 62470.0,
+      "timestamp": "2026-03-13T11:27:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2873",
+      "source": "A449",
+      "target": "A455",
+      "amount": 65112.0,
+      "timestamp": "2026-03-13T11:30:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2871",
+      "source": "A454",
+      "target": "A460",
+      "amount": 70620.0,
+      "timestamp": "2026-03-13T11:33:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2868",
+      "source": "A453",
+      "target": "A459",
+      "amount": 74440.0,
+      "timestamp": "2026-03-13T11:34:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2866",
+      "source": "A458",
+      "target": "A462",
+      "amount": 70590.0,
+      "timestamp": "2026-03-13T11:43:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2874",
+      "source": "A455",
+      "target": "A461",
+      "amount": 63810.0,
+      "timestamp": "2026-03-13T11:54:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2872",
+      "source": "A460",
+      "target": "A462",
+      "amount": 69560.0,
+      "timestamp": "2026-03-13T12:18:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2869",
+      "source": "A459",
+      "target": "A462",
+      "amount": 73320.0,
+      "timestamp": "2026-03-13T12:22:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2875",
+      "source": "A461",
+      "target": "A462",
+      "amount": 62850.0,
+      "timestamp": "2026-03-13T12:22:00",
+      "cluster_id": "C-001"
+    },
+    {
+      "id": "T2837",
+      "source": "A425",
+      "target": "A432",
+      "amount": 86461.0,
+      "timestamp": "2026-03-15T15:10:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2838",
+      "source": "A426",
+      "target": "A432",
+      "amount": 55605.0,
+      "timestamp": "2026-03-15T15:32:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2839",
+      "source": "A427",
+      "target": "A432",
+      "amount": 60251.0,
+      "timestamp": "2026-03-15T15:56:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2840",
+      "source": "A428",
+      "target": "A432",
+      "amount": 86150.0,
+      "timestamp": "2026-03-15T16:26:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2841",
+      "source": "A429",
+      "target": "A432",
+      "amount": 60071.0,
+      "timestamp": "2026-03-15T16:44:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2842",
+      "source": "A430",
+      "target": "A432",
+      "amount": 77978.0,
+      "timestamp": "2026-03-15T17:11:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2843",
+      "source": "A431",
+      "target": "A432",
+      "amount": 69283.0,
+      "timestamp": "2026-03-15T17:40:00",
+      "cluster_id": "C-007"
+    },
+    {
+      "id": "T2847",
+      "source": "A436",
+      "target": "A437",
+      "amount": 96000.0,
+      "timestamp": "2026-03-17T10:00:00",
+      "cluster_id": "C-008"
+    },
+    {
+      "id": "T2848",
+      "source": "A437",
+      "target": "A438",
+      "amount": 94100.0,
+      "timestamp": "2026-03-17T18:30:00",
+      "cluster_id": "C-008"
+    },
+    {
+      "id": "T2849",
+      "source": "A438",
+      "target": "A439",
+      "amount": 92300.0,
+      "timestamp": "2026-03-18T04:10:00",
+      "cluster_id": "C-008"
+    },
+    {
+      "id": "T2850",
+      "source": "A439",
+      "target": "A436",
+      "amount": 90500.0,
+      "timestamp": "2026-03-18T14:45:00",
+      "cluster_id": "C-008"
+    },
+    {
+      "id": "T2855",
+      "source": "A445",
+      "target": "A446",
+      "amount": 88000.0,
+      "timestamp": "2026-03-19T14:00:00",
+      "cluster_id": "C-006"
+    },
+    {
+      "id": "T2856",
+      "source": "A446",
+      "target": "A447",
+      "amount": 86420.0,
+      "timestamp": "2026-03-19T14:34:00",
+      "cluster_id": "C-006"
+    },
+    {
+      "id": "T2857",
+      "source": "A447",
+      "target": "A448",
+      "amount": 84860.0,
+      "timestamp": "2026-03-19T15:12:00",
+      "cluster_id": "C-006"
+    }
   ]
 }

@@ -1,0 +1,206 @@
+[
+  {
+    "cluster_id": "GT-001",
+    "typology": "fan_out_dispersion",
+    "accounts": [
+      "A396",
+      "A397",
+      "A398",
+      "A399",
+      "A400",
+      "A401",
+      "A402",
+      "A403",
+      "A404"
+    ],
+    "transaction_ids": [
+      "T2811",
+      "T2812",
+      "T2813",
+      "T2814",
+      "T2815",
+      "T2816",
+      "T2817",
+      "T2818"
+    ]
+  },
+  {
+    "cluster_id": "GT-002",
+    "typology": "fan_out_dispersion",
+    "accounts": [
+      "A405",
+      "A406",
+      "A407",
+      "A408",
+      "A409",
+      "A410",
+      "A411",
+      "A412",
+      "A413",
+      "A414",
+      "A415"
+    ],
+    "transaction_ids": [
+      "T2819",
+      "T2820",
+      "T2821",
+      "T2822",
+      "T2823",
+      "T2824",
+      "T2825",
+      "T2826",
+      "T2827",
+      "T2828"
+    ]
+  },
+  {
+    "cluster_id": "GT-003",
+    "typology": "fan_in_aggregation",
+    "accounts": [
+      "A416",
+      "A417",
+      "A418",
+      "A419",
+      "A420",
+      "A421",
+      "A422",
+      "A423",
+      "A424"
+    ],
+    "transaction_ids": [
+      "T2829",
+      "T2830",
+      "T2831",
+      "T2832",
+      "T2833",
+      "T2834",
+      "T2835",
+      "T2836"
+    ]
+  },
+  {
+    "cluster_id": "GT-004",
+    "typology": "fan_in_aggregation",
+    "accounts": [
+      "A425",
+      "A426",
+      "A427",
+      "A428",
+      "A429",
+      "A430",
+      "A431",
+      "A432"
+    ],
+    "transaction_ids": [
+      "T2837",
+      "T2838",
+      "T2839",
+      "T2840",
+      "T2841",
+      "T2842",
+      "T2843"
+    ]
+  },
+  {
+    "cluster_id": "GT-005",
+    "typology": "cyclic_round_tripping",
+    "accounts": [
+      "A433",
+      "A434",
+      "A435"
+    ],
+    "transaction_ids": [
+      "T2844",
+      "T2845",
+      "T2846"
+    ]
+  },
+  {
+    "cluster_id": "GT-006",
+    "typology": "cyclic_round_tripping",
+    "accounts": [
+      "A436",
+      "A437",
+      "A438",
+      "A439"
+    ],
+    "transaction_ids": [
+      "T2847",
+      "T2848",
+      "T2849",
+      "T2850"
+    ]
+  },
+  {
+    "cluster_id": "GT-007",
+    "typology": "rapid_pass_through",
+    "accounts": [
+      "A440",
+      "A441",
+      "A442",
+      "A443",
+      "A444"
+    ],
+    "transaction_ids": [
+      "T2851",
+      "T2852",
+      "T2853",
+      "T2854"
+    ]
+  },
+  {
+    "cluster_id": "GT-008",
+    "typology": "rapid_pass_through",
+    "accounts": [
+      "A445",
+      "A446",
+      "A447",
+      "A448"
+    ],
+    "transaction_ids": [
+      "T2855",
+      "T2856",
+      "T2857"
+    ]
+  },
+  {
+    "cluster_id": "GT-009",
+    "typology": "fan_out_dispersion",
+    "accounts": [
+      "A449",
+      "A450",
+      "A451",
+      "A452",
+      "A453",
+      "A454",
+      "A455",
+      "A456",
+      "A457",
+      "A458",
+      "A459",
+      "A460",
+      "A461",
+      "A462"
+    ],
+    "transaction_ids": [
+      "T2858",
+      "T2859",
+      "T2860",
+      "T2861",
+      "T2862",
+      "T2863",
+      "T2864",
+      "T2865",
+      "T2866",
+      "T2867",
+      "T2868",
+      "T2869",
+      "T2870",
+      "T2871",
+      "T2872",
+      "T2873",
+      "T2874",
+      "T2875"
+    ]
+  }
+]
