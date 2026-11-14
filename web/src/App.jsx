@@ -1,36 +1,75 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import LandingPage from './components/LandingPage.jsx';
 import MetricsBanner from './components/MetricsBanner.jsx';
 import ClusterTable from './components/ClusterTable.jsx';
-import GraphView from './components/GraphView.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
+import DashboardSkeleton from './components/DashboardSkeleton.jsx';
+import { useDashboardData } from './hooks/useDashboardData.js';
+
+const GraphView = lazy(() => import('./components/GraphView.jsx'));
 
 export default function App() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState('');
+  const [route, setRoute] = useState(() => window.location.hash === '#/dashboard' ? 'dashboard' : 'landing');
+  useEffect(() => {
+    const syncRoute = () => setRoute(window.location.hash === '#/dashboard' ? 'dashboard' : 'landing');
+    window.addEventListener('hashchange', syncRoute);
+    return () => window.removeEventListener('hashchange', syncRoute);
+  }, []);
+  useEffect(() => { window.scrollTo({ top: 0, behavior: 'auto' }); }, [route]);
+  return route === 'dashboard' ? <DashboardPage/> : <LandingPage/>;
+}
+
+function DashboardPage() {
+  const { data, error, loading, refresh } = useDashboardData();
   const [selectedId, setSelectedId] = useState(null);
+  const [graphItem, setGraphItem] = useState(null);
+  const [query, setQuery] = useState('');
+  const [typology, setTypology] = useState('all');
+  const [sort, setSort] = useState('risk');
+  const [ascending, setAscending] = useState(false);
+  const appliedFilters = useRef({ clusters: null, query: null, typology: null });
+  const reload = useCallback(() => { setGraphItem(null); refresh(); }, [refresh]);
+  const handleGraphSelect = useCallback((id, item) => { setSelectedId(id); setGraphItem(item ?? null); }, []);
+
+  const typologies = useMemo(() => [...new Set((data?.clusters ?? []).flatMap(cluster => Array.isArray(cluster.typologies) ? cluster.typologies : []))], [data?.clusters]);
+  const matchingClusters = useMemo(() => {
+    const search = query.trim().toLowerCase();
+    return (data?.clusters ?? []).filter(cluster => {
+      const accounts = Array.isArray(cluster.accounts) ? cluster.accounts : [];
+      const matchesQuery = !search || `${cluster.id} ${cluster.name ?? ''} ${accounts.join(' ')}`.toLowerCase().includes(search);
+      const matchesTypology = typology === 'all' || (Array.isArray(cluster.typologies) && cluster.typologies.includes(typology));
+      return matchesQuery && matchesTypology;
+    });
+  }, [data?.clusters, query, typology]);
+  const visibleClusters = useMemo(() => [...matchingClusters].sort((a, b) => {
+    const value = cluster => sort === 'exposure' ? Number(cluster.total_amount) || 0 : sort === 'accounts' ? (Array.isArray(cluster.accounts) ? cluster.accounts.length : 0) : Number(cluster.risk_score) || 0;
+    return (value(a) - value(b)) * (ascending ? 1 : -1);
+  }), [matchingClusters, sort, ascending]);
 
   useEffect(() => {
-    let active = true;
-    Promise.all(['clusters', 'graph', 'metrics'].map(async name => {
-      const response = await fetch(`/data/${name}.json`);
-      if (!response.ok) throw new Error(`Could not load /data/${name}.json (${response.status}).`);
-      return response.json();
-    })).then(([clusters, graph, metrics]) => {
-      if (active) { setData({ clusters, graph, metrics }); setSelectedId(clusters[0]?.id ?? null); }
-    }).catch(e => { if (active) setError(e.message); });
-    return () => { active = false; };
-  }, []);
+    if (!data) return;
+    const previous = appliedFilters.current;
+    if (previous.clusters === data.clusters && previous.query === query && previous.typology === typology) return;
+    appliedFilters.current = { clusters: data.clusters, query, typology };
+    setSelectedId(visibleClusters[0]?.id ?? null);
+    setGraphItem(null);
+  }, [data, query, typology, visibleClusters]);
 
-  if (error) return <main className="state-screen"><div className="state-card"><span className="eyebrow">DATA CONNECTION</span><h1>Results unavailable</h1><p>{error}</p><p className="muted">Add the pipeline JSON files under <code>web/public/data/</code> and refresh.</p></div></main>;
-  if (!data) return <main className="state-screen"><div className="state-card"><span className="loader"/><h1>Loading investigation data</h1><p className="muted">Connecting clusters, transactions and evaluation metrics…</p></div></main>;
+  const selected = data?.clusters.find(cluster => cluster.id === selectedId) ?? null;
+  const selectCluster = id => { setSelectedId(id); setGraphItem(null); };
+  const sortBy = field => { if (sort === field) setAscending(value => !value); else { setSort(field); setAscending(false); } };
 
-  const selected = data.clusters.find(c => c.id === selectedId) ?? null;
+  if (loading && !data) return <DashboardSkeleton/>;
+  if (error && !data) return <main className="state-screen"><div className="state-card"><span className="eyebrow">DATA CONNECTION</span><h1>Results unavailable</h1><p>{error}</p><p className="muted">Check the JSON files under <code>public/data/</code>, then retry.</p><button className="retry-button" onClick={reload}>Retry loading data</button></div></main>;
+  if (!data) return null;
+
   return <main className="app-shell">
-    <header className="topbar"><a className="brand" href="#top"><span className="brand-mark">T</span><span>TRACE<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="topbar-right"><span className="live-dot"/> INVESTIGATION WORKSPACE <span className="topbar-date">BUILD BEYOND ’26</span></div></header>
+    <header className="topbar"><a className="brand" href="#/" aria-label="Return to TRACE home"><span className="brand-mark">T</span><span>TRACE<small>FINANCIAL CRIME INTELLIGENCE</small></span></a><div className="dashboard-nav"><span className="dashboard-current">INVESTIGATION WORKSPACE</span><span className="topbar-date">DEMO ENVIRONMENT</span><button className="refresh-button" onClick={reload} disabled={loading} aria-label="Refresh dashboard data">{loading ? 'Refreshing…' : 'Refresh data'}</button></div></header>
     <section className="intro" id="top"><div><span className="eyebrow">PS 2.1 · NETWORK ANALYSIS</span><h1>Follow the money.<br/><em>Find the pattern.</em></h1><p>Layered transaction networks, surfaced and explained.</p></div><div className="dataset-chip"><span className="dataset-icon">◈</span><div><b>{data.metrics.dataset?.transactions?.toLocaleString() ?? '—'}</b><small>TRANSACTIONS ANALYZED</small></div><i/></div></section>
-    <MetricsBanner metrics={data.metrics}/>
+    {error && <div className="refresh-error" role="alert">Refresh failed: {error} <button onClick={reload}>Retry</button></div>}
+    <MetricsBanner metrics={data.metrics} totals={{ clusters: data.clusters.length, nodes: data.graph.nodes.length, edges: data.graph.edges.length }}/>
     <div className="section-heading"><div><span className="eyebrow">PRIORITIZED FOR REVIEW</span><h2>Suspicious clusters <span>{data.clusters.length.toString().padStart(2, '0')}</span></h2></div><div className="section-note"><span className="live-dot"/> GRAPH METHOD · RANKED BY RISK</div></div>
-    <section className="workspace"><ClusterTable clusters={data.clusters} selectedId={selectedId} onSelect={setSelectedId}/><div className="right-column"><GraphView graph={data.graph} clusters={data.clusters} selected={selected}/><DetailPanel cluster={selected}/></div></section>
+    <section className="workspace"><ClusterTable clusters={visibleClusters} totalClusters={data.clusters.length} typologies={typologies} query={query} typology={typology} sort={sort} ascending={ascending} onQueryChange={setQuery} onTypologyChange={setTypology} onSortChange={sortBy} selectedId={selectedId} onSelect={selectCluster}/><div className="right-column"><Suspense fallback={<div className="graph-loading">Loading network visualization…</div>}><GraphView graph={data.graph} clusters={data.clusters} selected={selected} graphItem={graphItem} onSelect={handleGraphSelect}/></Suspense><DetailPanel cluster={selected} graphItem={graphItem}/></div></section>
     <footer><span>TRACE <i>·</i> GRAPH-BASED AML DETECTION</span><span>DEMO DATASET <i>·</i> BUILD BEYOND ’26</span></footer>
   </main>;
 }
