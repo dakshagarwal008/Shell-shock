@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
-  <title id="title">TRACE dashboard preview</title>
-  <desc id="desc">A mockup of the TRACE financial crime intelligence dashboard with KPI cards, cluster list, network graph, and detail panel.</desc>
+  <title id="title">Shell Shocker dashboard preview</title>
+  <desc id="desc">A mockup of the Shell Shocker financial crime intelligence dashboard with KPI cards, cluster list, network graph, and detail panel.</desc>
   <defs>
     <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
       <stop offset="0" stop-color="#0d1520"/>
@@ -35,7 +35,7 @@
     <rect x="34" y="26" width="1132" height="668" rx="12" fill="url(#panel)" stroke="#233744"/>
   </g>
 
-  <text x="74" y="70" class="label">TRACE · FINANCIAL CRIME INTELLIGENCE</text>
+  <text x="74" y="70" class="label">Shell Shocker · FINANCIAL CRIME INTELLIGENCE</text>
   <text x="74" y="118" class="title">Follow the money.</text>
   <text x="74" y="148" class="body">Temporal graph detection for layered network risk.</text>
 

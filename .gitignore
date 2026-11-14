@@ -9,3 +9,4 @@ web/.vite/
 # Python generated files
 __pycache__/
 *.py[cod]
+.venv/

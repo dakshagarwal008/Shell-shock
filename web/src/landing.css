@@ -1,4 +1,4 @@
-/* Public-facing TRACE landing page */
+/* Public-facing Shell Shocker landing page */
 .landing-page { min-height: 100vh; overflow: hidden; background: #09141b; }
 .page-width { width: min(1190px, calc(100% - 88px)); margin-inline: auto; }
 .landing-nav-wrap { position: relative; z-index: 2; border-bottom: 1px solid var(--line); background: #09141b; }
