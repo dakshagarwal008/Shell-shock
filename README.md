@@ -15,6 +15,18 @@ Shell Shocker analyzes transaction networks to surface suspicious account cluste
 
 Severity labels in the dashboard are display bands derived from each backend risk score. The score and backend scoring logic are unchanged. The current data does not provide investigation workflow statuses, so the dashboard does not show a status field.
 
+## Review 2 demonstration
+
+The review walkthrough can show the application using its integrated detection output:
+
+1. Compare baseline and graph-method precision, recall, and F1 metrics.
+2. Search and filter risk-ranked cluster alerts by account, typology, or risk level.
+3. Select an alert to inspect its highlighted account network, directed transfers, risk score, and backend summary.
+4. Open Investigation Mode to review the alert, replay timestamped transfers chronologically, and focus graph accounts referenced by the backend evidence summary.
+5. Export the investigation view with the browser print dialog or save it as a PDF where supported.
+
+The review uses the checked-in `clusters.json`, `graph.json`, and `metrics.json` outputs; the displayed transaction paths and amounts come from those records.
+
 ## Project structure
 
 ```text
