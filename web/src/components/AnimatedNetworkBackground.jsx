@@ -66,7 +66,7 @@ export default function AnimatedNetworkBackground() {
         context.beginPath();
         context.moveTo(from.x, from.y);
         context.lineTo(to.x, to.y);
-        context.strokeStyle = textSide ? 'rgba(112, 153, 157, 0.10)' : 'rgba(125, 170, 169, 0.31)';
+          context.strokeStyle = textSide ? 'rgba(112, 153, 157, 0.10)' : 'rgba(125, 170, 169, 0.31)';
         context.lineWidth = 0.85;
         context.stroke();
 
@@ -94,6 +94,7 @@ export default function AnimatedNetworkBackground() {
         const point = points[index];
         const pulse = (Math.sin(time * 0.00055 + node.pulse) + 1) / 2;
         const isAccent = node.index % 7 === 2;
+        const isBlueAccent = node.index % 11 === 6;
         const textSide = point.x < width * 0.52;
         const alpha = textSide ? 0.2 + pulse * 0.12 : 0.52 + pulse * 0.23;
         if (isAccent) {
@@ -105,7 +106,7 @@ export default function AnimatedNetworkBackground() {
         }
         context.beginPath();
         context.arc(point.x, point.y, node.radius + pulse * 0.25, 0, Math.PI * 2);
-        context.fillStyle = isAccent ? `rgba(174, 215, 204, ${alpha})` : `rgba(157, 190, 204, ${alpha * 0.86})`;
+        context.fillStyle = isAccent ? `rgba(174, 215, 204, ${alpha})` : isBlueAccent ? `rgba(151, 188, 231, ${alpha * 0.9})` : `rgba(157, 190, 204, ${alpha * 0.86})`;
         if (isAccent && !textSide && pulse > 0.55) {
           context.shadowBlur = 9;
           context.shadowColor = 'rgba(127, 177, 168, 0.32)';

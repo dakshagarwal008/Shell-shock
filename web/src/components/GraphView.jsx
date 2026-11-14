@@ -25,14 +25,15 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const cluster = clusterById.get(e.cluster_id);
       const color = TYPOLOGY[cluster?.typologies?.[0]]?.color ?? '#7490a4';
       const amount = e.amount != null && Number.isFinite(Number(e.amount)) ? Number(e.amount) : null;
-      return { data: { id: String(e.id), source: String(e.source), target: String(e.target), amount, title: `${money(amount)} · ${e.timestamp ?? 'time unavailable'}`, color, clusterId: String(e.cluster_id ?? ''), width: Math.max(1.5, Math.min(7, 1.5 + Math.log10(Math.max(1, amount || 1) / 10000))) } };
+      const timestamp = typeof e.timestamp === 'string' ? e.timestamp : null;
+      return { data: { id: String(e.id), source: String(e.source), target: String(e.target), amount, timestamp, title: `${money(amount)} · ${timestamp ?? 'time unavailable'}`, color, clusterId: String(e.cluster_id ?? ''), width: Math.max(1.5, Math.min(7, 1.5 + Math.log10(Math.max(1, amount || 1) / 10000))) } };
     });
     let cy;
     try { cy = cytoscape({ container: container.current, elements: [...nodes, ...edges], minZoom: 0.35, maxZoom: 2.8, wheelSensitivity: 0.18, layout: { name: 'cose', animate: false, fit: true, padding: 38, nodeRepulsion: 6500, idealEdgeLength: 115, gravity: 0.18, numIter: nodes.length > 300 ? 250 : 700 }, style: [
-      { selector: 'node', style: { label: 'data(label)', width: 36, height: 36, 'background-color': '#172a35', 'border-width': 2, 'border-color': 'data(color)', color: '#e3edf1', 'font-size': 10, 'min-zoomed-font-size': 8, 'font-family': 'IBM Plex Mono, monospace', 'text-valign': 'center', 'text-halign': 'center', 'text-outline-color': '#101920', 'text-outline-width': 2 } },
+      { selector: 'node', style: { label: 'data(label)', width: 36, height: 36, 'background-color': 'data(color)', 'background-opacity': 0.2, 'border-width': 2, 'border-color': 'data(color)', color: '#e3edf1', 'font-size': 10, 'min-zoomed-font-size': 8, 'font-family': 'IBM Plex Mono, monospace', 'text-valign': 'center', 'text-halign': 'center', 'text-outline-color': '#101920', 'text-outline-width': 2 } },
       { selector: 'edge', style: { 'curve-style': 'bezier', 'target-arrow-shape': 'triangle', 'arrow-scale': 0.8, 'line-color': 'data(color)', 'target-arrow-color': 'data(color)', width: 'data(width)', opacity: 0.8, label: 'data(title)', 'font-size': 8, 'min-zoomed-font-size': 7, 'font-family': 'IBM Plex Mono, monospace', color: '#b4c3cb', 'text-background-color': '#101920', 'text-background-opacity': 0.86, 'text-background-padding': 2, 'text-rotation': 'autorotate' } },
       { selector: '.dimmed', style: { opacity: 0.12 } },
-      { selector: 'node.active', style: { 'background-color': '#142931', 'border-color': 'data(color)', 'border-width': 3, width: 43, height: 43 } },
+      { selector: 'node.active', style: { 'background-color': 'data(color)', 'background-opacity': 0.42, 'border-color': 'data(color)', 'border-width': 3, width: 43, height: 43 } },
       { selector: 'node.node-focus', style: { 'border-color': '#ffffff', 'border-width': 4, width: 47, height: 47 } },
       { selector: 'edge.connected-focus', style: { opacity: 1, width: 5 } },
       { selector: 'edge.active', style: { opacity: 1, width: 'mapData(width, 1, 7, 2.5, 8)' } }
@@ -56,7 +57,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
       const linkedIds = element.isNode() ? element.data('clusters') : [element.data('clusterId')];
       const cluster = linkedIds.map(id => clusterById.get(id)).find(Boolean) ?? [...clusterById.values()].find(c => element.isNode() ? (Array.isArray(c.accounts) && c.accounts.includes(element.id())) : (Array.isArray(c.transaction_ids) && c.transaction_ids.includes(element.id())));
       if (cluster) {
-        onSelect(cluster.id, element.isNode() ? { type: 'account', id: element.id(), label: element.data('label'), risk: element.data('risk'), connections: element.connectedEdges().map(edge => ({ id: edge.id(), source: edge.data('source'), target: edge.data('target'), amount: edge.data('amount'), title: edge.data('title') })) } : { type: 'transaction', id: element.id(), source: element.data('source'), target: element.data('target'), amount: element.data('amount'), title: element.data('title') });
+        onSelect(cluster.id, element.isNode() ? { type: 'account', id: element.id(), label: element.data('label'), risk: element.data('risk'), connections: element.connectedEdges().map(edge => ({ id: edge.id(), source: edge.data('source'), target: edge.data('target'), amount: edge.data('amount'), timestamp: edge.data('timestamp'), title: edge.data('title') })) } : { type: 'transaction', id: element.id(), source: element.data('source'), target: element.data('target'), amount: element.data('amount'), timestamp: element.data('timestamp'), title: element.data('title') });
         setNotice(element.isNode() ? `Selected account ${element.data('label')} in ${cluster.id}` : `Selected transaction ${element.id()} · ${money(element.data('amount'))}`);
       }
       else setNotice(`${element.isNode() ? 'Account' : 'Transaction'} ${element.data('label') ?? element.id()} is not linked to a cluster.`);
@@ -82,7 +83,7 @@ export default function GraphView({ graph, clusters, selected, graphItem, onSele
   return <section className="graph-card">
     <div className="graph-heading"><div><span className="eyebrow">TRANSACTION NETWORK</span><h3>{selected ? <>{selected.id} <small>· {Array.isArray(selected.accounts) ? selected.accounts.length : 0} ACCOUNTS</small></> : 'Cluster graph'}</h3></div><div className="graph-controls"><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() * 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom in">+</button><button onClick={() => { const cy = cyRef.current; if (cy) cy.zoom({ level: cy.zoom() / 1.2, renderedPosition: { x: cy.width() / 2, y: cy.height() / 2 } }); }} aria-label="Zoom out">−</button><button onClick={() => cyRef.current?.fit(undefined, 45)} aria-label="Fit graph">Fit</button><button onClick={() => { const cy = cyRef.current; if (cy) { cy.reset(); cy.fit(undefined, 45); } }} aria-label="Reset graph view">Reset</button></div></div>
     <div className="graph-canvas" ref={container}>{graphError ? <div className="graph-empty">{graphError}</div> : !(graph.nodes ?? []).some(node => node?.id != null) && <div className="graph-empty">No transaction graph in this run.</div>}</div>
-    <div className="graph-legend">{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
+    <div className="graph-legend"><span className="account-legend"><i/>ACCOUNT NODE</span><span className="transfer-legend"><i/>DIRECTED TRANSFER</span><span className="legend-separator" aria-hidden="true"/>{Object.entries(TYPOLOGY).map(([key, typology]) => <span key={key}><i style={{ '--legend-color': typology.color }}/>{typology.short}</span>)}<small>EDGE WIDTH ∝ AMOUNT</small></div>
     <div className="graph-status" aria-live="polite">{notice || 'Click a node or transaction to inspect its details. Drag to pan; scroll to zoom.'}</div>
   </section>;
 }

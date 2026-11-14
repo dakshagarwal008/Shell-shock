@@ -5,6 +5,7 @@ import ClusterTable from './components/ClusterTable.jsx';
 import DetailPanel from './components/DetailPanel.jsx';
 import DashboardSkeleton from './components/DashboardSkeleton.jsx';
 import { useDashboardData } from './hooks/useDashboardData.js';
+import { riskBand } from './utils/clusterDisplay.js';
 
 const GraphView = lazy(() => import('./components/GraphView.jsx'));
 
@@ -25,9 +26,10 @@ function DashboardPage() {
   const [graphItem, setGraphItem] = useState(null);
   const [query, setQuery] = useState('');
   const [typology, setTypology] = useState('all');
+  const [riskLevel, setRiskLevel] = useState('all');
   const [sort, setSort] = useState('risk');
   const [ascending, setAscending] = useState(false);
-  const appliedFilters = useRef({ clusters: null, query: null, typology: null });
+  const appliedFilters = useRef({ clusters: null, query: null, typology: null, riskLevel: null });
   const reload = useCallback(() => { setGraphItem(null); refresh(); }, [refresh]);
   const handleGraphSelect = useCallback((id, item) => { setSelectedId(id); setGraphItem(item ?? null); }, []);
 
@@ -38,9 +40,10 @@ function DashboardPage() {
       const accounts = Array.isArray(cluster.accounts) ? cluster.accounts : [];
       const matchesQuery = !search || `${cluster.id} ${cluster.name ?? ''} ${accounts.join(' ')}`.toLowerCase().includes(search);
       const matchesTypology = typology === 'all' || (Array.isArray(cluster.typologies) && cluster.typologies.includes(typology));
-      return matchesQuery && matchesTypology;
+      const matchesRisk = riskLevel === 'all' || riskBand(cluster.risk_score)?.id === riskLevel;
+      return matchesQuery && matchesTypology && matchesRisk;
     });
-  }, [data?.clusters, query, typology]);
+  }, [data?.clusters, query, typology, riskLevel]);
   const visibleClusters = useMemo(() => [...matchingClusters].sort((a, b) => {
     const value = cluster => sort === 'exposure' ? Number(cluster.total_amount) || 0 : sort === 'accounts' ? (Array.isArray(cluster.accounts) ? cluster.accounts.length : 0) : Number(cluster.risk_score) || 0;
     return (value(a) - value(b)) * (ascending ? 1 : -1);
@@ -49,13 +52,26 @@ function DashboardPage() {
   useEffect(() => {
     if (!data) return;
     const previous = appliedFilters.current;
-    if (previous.clusters === data.clusters && previous.query === query && previous.typology === typology) return;
-    appliedFilters.current = { clusters: data.clusters, query, typology };
+    if (previous.clusters === data.clusters && previous.query === query && previous.typology === typology && previous.riskLevel === riskLevel) return;
+    appliedFilters.current = { clusters: data.clusters, query, typology, riskLevel };
     setSelectedId(visibleClusters[0]?.id ?? null);
     setGraphItem(null);
-  }, [data, query, typology, visibleClusters]);
+  }, [data, query, typology, riskLevel, visibleClusters]);
 
   const selected = data?.clusters.find(cluster => cluster.id === selectedId) ?? null;
+  const periodByCluster = useMemo(() => {
+    if (!data) return {};
+    const timestampByTransaction = new Map((data.graph.edges ?? []).map(edge => [String(edge.id), edge.timestamp]));
+    return Object.fromEntries(data.clusters.map(cluster => {
+      const timestamps = (cluster.transaction_ids ?? []).map(id => timestampByTransaction.get(String(id))).filter(value => typeof value === 'string' && value).sort();
+      return [cluster.id, { start: timestamps[0] ?? null, end: timestamps.at(-1) ?? null }];
+    }));
+  }, [data]);
+  const selectedTransactions = useMemo(() => {
+    if (!selected) return [];
+    const ids = new Set(selected.transaction_ids ?? []);
+    return (data?.graph.edges ?? []).filter(edge => ids.has(String(edge.id)));
+  }, [data?.graph.edges, selected]);
   const selectCluster = id => { setSelectedId(id); setGraphItem(null); };
   const sortBy = field => { if (sort === field) setAscending(value => !value); else { setSort(field); setAscending(false); } };
 
@@ -68,8 +84,8 @@ function DashboardPage() {
     <section className="intro" id="top"><div><span className="eyebrow">PS 2.1 · NETWORK ANALYSIS</span><h1>Follow the money.<br/><em>Find the pattern.</em></h1><p>Layered transaction networks, surfaced and explained.</p></div><div className="dataset-chip"><span className="dataset-icon">◈</span><div><b>{data.metrics.dataset?.transactions?.toLocaleString() ?? '—'}</b><small>TRANSACTIONS ANALYZED</small></div><i/></div></section>
     {error && <div className="refresh-error" role="alert">Refresh failed: {error} <button onClick={reload}>Retry</button></div>}
     <MetricsBanner metrics={data.metrics} totals={{ clusters: data.clusters.length, nodes: data.graph.nodes.length, edges: data.graph.edges.length }}/>
-    <div className="section-heading"><div><span className="eyebrow">PRIORITIZED FOR REVIEW</span><h2>Suspicious clusters <span>{data.clusters.length.toString().padStart(2, '0')}</span></h2></div><div className="section-note"><span className="live-dot"/> GRAPH METHOD · RANKED BY RISK</div></div>
-    <section className="workspace"><ClusterTable clusters={visibleClusters} totalClusters={data.clusters.length} typologies={typologies} query={query} typology={typology} sort={sort} ascending={ascending} onQueryChange={setQuery} onTypologyChange={setTypology} onSortChange={sortBy} selectedId={selectedId} onSelect={selectCluster}/><div className="right-column"><Suspense fallback={<div className="graph-loading">Loading network visualization…</div>}><GraphView graph={data.graph} clusters={data.clusters} selected={selected} graphItem={graphItem} onSelect={handleGraphSelect}/></Suspense><DetailPanel cluster={selected} graphItem={graphItem}/></div></section>
+    <div className="section-heading"><div><span className="eyebrow">PRIORITIZED FOR REVIEW</span><h2>Suspicious alerts <span>{visibleClusters.length.toString().padStart(2, '0')}</span></h2></div><div className="section-note"><span className="live-dot"/> DETECTION OUTPUT · RANKED BY RISK</div></div>
+    <section className="workspace"><ClusterTable clusters={visibleClusters} totalClusters={data.clusters.length} typologies={typologies} query={query} typology={typology} riskLevel={riskLevel} onRiskLevelChange={setRiskLevel} periodByCluster={periodByCluster} sort={sort} ascending={ascending} onQueryChange={setQuery} onTypologyChange={setTypology} onSortChange={sortBy} selectedId={selectedId} onSelect={selectCluster}/><div className="right-column"><Suspense fallback={<div className="graph-loading">Loading network visualization…</div>}><GraphView graph={data.graph} clusters={data.clusters} selected={selected} graphItem={graphItem} onSelect={handleGraphSelect}/></Suspense><DetailPanel cluster={selected} graphItem={graphItem} period={selected ? periodByCluster[selected.id] : null} transactions={selectedTransactions}/></div></section>
     <footer><span>TRACE <i>·</i> GRAPH-BASED AML DETECTION</span><span>DEMO DATASET <i>·</i> BUILD BEYOND ’26</span></footer>
   </main>;
 }
